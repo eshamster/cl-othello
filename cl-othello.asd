@@ -19,7 +19,8 @@
   :depends-on ()
   :components ((:module "src"
                 :components
-                ((:file "cl-othello"))))
+                ((:file "defines")
+                 (:file "cl-othello"))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames

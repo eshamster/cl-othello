@@ -15,7 +15,8 @@
                :prove)
   :components ((:module "t"
                 :components
-                ((:test-file "cl-othello"))))
+                ((:test-file "defines")
+                 (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
   :defsystem-depends-on (:prove-asdf)
