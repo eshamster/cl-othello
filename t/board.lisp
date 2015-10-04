@@ -46,14 +46,13 @@
     (is (get-next-cell 1 2 +dir-left-up+)    '(0 . 1))
     (is (get-next-cell 1 2 +dir-left-down+)  '(0 . 3))))
 
-(defparameter *test-board* (init-board))
-
 (subtest
     "Test get-piece"
-  (is (get-piece *test-board* 3 3) +black+)
-  (is (get-piece *test-board* 4 3) +white+)
-  (ok (is-empty (get-piece *test-board* 0 3)))
-  (ok (null (get-piece *test-board* -1 5))))
+  (let ((board (init-board)))
+    (is (get-piece board 3 3) +black+)
+    (is (get-piece board 4 3) +white+)
+    (ok (is-empty (get-piece board 0 3)))
+    (ok (null (get-piece board -1 5)))))
 
 (subtest
     "Test make-moves-on-board"
@@ -61,54 +60,70 @@
 	     (is (move-store-count store) (length expected-moves))
 	     (dolist (move expected-moves)
 	       (ok (contains-move store (car move) (cdr move))))))
-    (test (make-moves-on-board *test-board* +white+)
-	  '((4 . 5) (5 . 4) (2 . 3) (3 . 2)))
-    (test (make-moves-on-board *test-board* +black+)
-	  '((3 . 5) (2 . 4) (5 . 3) (4 . 2)))
-    (test (make-moves-on-board *test-board* nil) nil)))
+    (let ((board (init-board)))
+      (test (make-moves-on-board board +white+)
+            '((4 . 5) (5 . 4) (2 . 3) (3 . 2)))
+      (test (make-moves-on-board board +black+)
+            '((3 . 5) (2 . 4) (5 . 3) (4 . 2)))
+      (test (make-moves-on-board board nil) nil))))
 
 (subtest
     "Test move-on-board"
   (subtest
       "Test error"
-    (ok (not (move-on-board *test-board* -1 5 +white+)))
-    (ok (not (move-on-board *test-board* 3 5 nil)))
-    (ok (not (move-on-board *test-board* 5 5 +white+))))
+    (let ((board (init-board)))
+      (ok (not (move-on-board board -1 5 +white+)))
+      (ok (not (move-on-board board 3 5 nil)))
+      (ok (not (move-on-board board 5 5 +white+)))))
 
   (subtest
       "Test move"
-    (is *test-board* (init-board) :test #'equalp)
-    (labels ((prove-reverse-list (result expected)
-	       (is-type result 'move-store)
-	       (is (move-store-count result) (length expected))
-	       (let ((all t))
-		 (dolist (move expected)
-		   (unless (contains-move result (car move) (cdr move))
-		     (setf all nil)
-		     (return)))
-		 (ok all "All of moves in the list are contained in the reverse result"))))
-      (prove-reverse-list (move-on-board *test-board* 4 5 +white+) '((4 . 4)))
-      (is *test-board*
-		#(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-		:test #'equalp)
-      (move-on-board *test-board* 3 5 +black+)
-      (move-on-board *test-board* 2 4 +white+)
-      (prove-reverse-list (move-on-board *test-board* 5 5 +black+) '((4 . 4) (4 . 5)))
-      (is *test-board*
-		#(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 -1 1 -1 0 0 0 0 0 1 -1 -1 0 0 0 0 0 0 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
-		:test #'equalp))))
+    (let ((board (init-board)))
+      (labels ((prove-reverse-list (result expected)
+                 (is-type result 'move-store)
+                 (is (move-store-count result) (length expected))
+                 (let ((all t))
+                   (dolist (move expected)
+                     (unless (contains-move result (car move) (cdr move))
+                       (setf all nil)
+                       (return)))
+                   (ok all "All of moves in the list are contained in the reverse result"))))
+        (prove-reverse-list (move-on-board board 4 5 +white+) '((4 . 4)))
+        (is board
+            #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 1 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+            :test #'equalp)
+        (move-on-board board 3 5 +black+)
+        (move-on-board board 2 4 +white+)
+        (prove-reverse-list (move-on-board board 5 5 +black+) '((4 . 4) (4 . 5)))
+        (is board
+            #(0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 -1 1 -1 0 0 0 0 0 1 -1 -1 0 0 0 0 0 0 0 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
+            :test #'equalp)))))
+
+(defun make-test-board ()
+  (let ((board (init-board)))
+    (move-on-board board 4 5 +white+)
+    (move-on-board board 3 5 +black+)
+    (move-on-board board 2 4 +white+)
+    (move-on-board board 5 5 +black+)
+    board))
 
 (subtest
     "Test count-piece"
-  (is (count-piece *test-board* +white+) 3)
-  (is (count-piece *test-board* +black+) 5)
-  (ok (not (count-piece *test-board* nil)))
-  (ok (not (count-piece '(1 2) +white+))))
+  (let ((board (make-test-board)))
+    (move-on-board board 4 5 +white+)
+    (move-on-board board 3 5 +black+)
+    (move-on-board board 2 4 +white+)
+    (move-on-board board 5 5 +black+)
+    (is (count-piece board +white+) 3)
+    (is (count-piece board +black+) 5)
+    (ok (not (count-piece board nil)))
+    (ok (not (count-piece '(1 2) +white+)))))
 
 (subtest
     "Test print-board"
-  (is-print (print-board *test-board*)
-		  "   01234567
+  (let ((board (make-test-board)))
+    (is-print (print-board board)
+              "   01234567
 |0 -------- |
 |1 -------- |
 |2 -------- |
@@ -117,6 +132,6 @@
 |5 ---XXX-- |
 |6 -------- |
 |7 -------- |
-"))
+")))
 
 (finalize)
