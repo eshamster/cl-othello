@@ -25,6 +25,7 @@
                  (:file "move")
                  (:file "move-store")
                  (:file "history-record")
+                 (:file "board")
                  (:file "cl-othello"))))
   :description ""
   :long-description
