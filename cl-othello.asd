@@ -20,6 +20,7 @@
   :components ((:module "src"
                 :components
                 ((:file "defines")
+                 (:file "utils")
                  (:file "cl-othello"))))
   :description ""
   :long-description

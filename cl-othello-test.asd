@@ -16,6 +16,7 @@
   :components ((:module "t"
                 :components
                 ((:test-file "defines")
+                 (:test-file "utils")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
