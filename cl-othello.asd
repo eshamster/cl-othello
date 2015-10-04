@@ -21,6 +21,7 @@
                 :components
                 ((:file "defines")
                  (:file "utils")
+                 (:file "tree")
                  (:file "cl-othello"))))
   :description ""
   :long-description

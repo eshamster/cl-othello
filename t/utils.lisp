@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage :cl-othello-test.utils
+(defpackage cl-othello-test.utils
   (:use :cl
         :cl-othello.utils
         :prove))

@@ -1,5 +1,5 @@
 (in-package :cl-user)
-(defpackage :cl-othello.utils
+(defpackage cl-othello.utils
   (:use :cl)
   (:export :string-to-list
            :stream-to-list

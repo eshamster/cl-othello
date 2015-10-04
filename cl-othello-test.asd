@@ -17,6 +17,7 @@
                 :components
                 ((:test-file "defines")
                  (:test-file "utils")
+                 (:test-file "tree")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
