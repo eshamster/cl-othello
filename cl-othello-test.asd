@@ -20,6 +20,7 @@
                  (:test-file "tree")
                  (:test-file "move")
                  (:test-file "move-store")
+                 (:test-file "history-record")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
