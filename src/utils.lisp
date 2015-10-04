@@ -25,7 +25,7 @@
 (defun stream-to-list (&optional (stream *standard-input*))
   (string-to-list (read-line stream)))
 
-
+(defgeneric to-string (target))
 (defmethod to-string (target)
   (format nil "~A" target))
 (defmethod to-string ((target function))

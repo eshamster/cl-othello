@@ -10,7 +10,7 @@
            :reset-move-store
            :do-move-store
            :get-nth-move
-           :copy-move-store
+           :copy-to-move-store
            :clone-move-store
            :with-cloned-move-store
            :contains-move
@@ -27,8 +27,8 @@
 (defparameter *max-move-store* (- (* +board-size+ +board-size+) 4))
 
 (defstruct move-store
-  :count
-  :moves)
+  count
+  moves)
 
 (defun init-move-store (&key (num-moves *max-move-store*))
   (make-move-store :count 0
@@ -63,19 +63,19 @@
       (return-from contains-move t)))
   nil)
 
-(defun copy-move-store (dst src)
+(defun copy-to-move-store (dst src)
   (reset-move-store dst)
   (do-move-store (move src)
     (add-to-move-store dst (car move) (cdr move)))
   dst)
 (defun clone-move-store (src)
   (let ((dst (init-move-store)))
-    (copy-move-store dst src)
+    (copy-to-move-store dst src)
     dst))
 
 (defstruct move-store-stack
-  :unused-store
-  :used-store)
+  unused-store
+  used-store)
 
 (defun init-move-store-stack ()
   (make-move-store-stack))
@@ -103,9 +103,9 @@
     (setf (unused stack) (cons (car (used stack)) (unused stack)))
     (setf (used stack) (cdr (used stack)))))
 
-(defmacro with-cloned-move-store (stack cloned<>store &body body)
-  `(let ((,(car cloned<>store) (reserve-move-store-from-stack ,stack)))
-     (copy-move-store ,(car cloned<>store) ,(cadr cloned<>store))
+(defmacro with-cloned-move-store (stack (cloned store) &body body)
+  `(let ((,cloned (reserve-move-store-from-stack ,stack)))
+     (copy-to-move-store ,cloned ,store)
      ,@body
      (free-move-store-to-stack ,stack)))
 
