@@ -22,6 +22,7 @@
                 ((:file "defines")
                  (:file "utils")
                  (:file "tree")
+                 (:file "move")
                  (:file "cl-othello"))))
   :description ""
   :long-description

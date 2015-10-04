@@ -18,6 +18,7 @@
                 ((:test-file "defines")
                  (:test-file "utils")
                  (:test-file "tree")
+                 (:test-file "move")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
