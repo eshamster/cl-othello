@@ -27,6 +27,7 @@
                  (:file "history-record")
                  (:file "board")
                  (:file "game")
+                 (:file "eval-board")
                  (:file "cl-othello"))))
   :description ""
   :long-description

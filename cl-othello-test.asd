@@ -24,6 +24,7 @@
                  (:test-file "history-record")
                  (:test-file "board")
                  (:test-file "game")
+                 (:test-file "eval-board")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
