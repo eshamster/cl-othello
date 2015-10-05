@@ -13,21 +13,21 @@
 
 (plan 8)
 
-(defparameter *test-game* (init-game))
-
 (subtest
     "Test init-game"
-  (is (get-game-depth *test-game*) 0)
-  (ok (not (reverse-game *test-game*))))
-  
+  (let ((game (init-game)))
+    (is (get-game-depth game) 0)
+    (ok (not (reverse-game game)))))
+
 (subtest
     "Test move-game"
-  (ok (not (move-game *test-game* -1 3)))
-  (ok (not (move-game *test-game* 5 5)))
-  (let* ((game (make-nth-test-game 2))
-         (depth (get-game-depth game)))
-    (assert (move-game game 4 5))
-    (is (get-game-depth game) (1+ depth))))
+  (let ((game (init-game)))
+    (ok (not (move-game game -1 3)))
+    (ok (not (move-game game 5 5)))
+    (let* ((game (make-nth-test-game 2))
+           (depth (get-game-depth game)))
+      (assert (move-game game 4 5))
+      (is (get-game-depth game) (1+ depth)))))
 
 (subtest
     "Test is-game-same-phase"
@@ -40,30 +40,30 @@
 
 (subtest
     "Test utils for test (make-nth-test-game)"
-  (setf *test-game* (make-nth-test-game 3))
-
-  (is (get-game-depth *test-game*) 3)
-  (let ((store (make-moves *test-game*)))
-    (is (move-store-count store) 2)
-    (ok (contains-move store 2 4))
-    (ok (contains-move store 4 2))))
+  (let ((game  (make-nth-test-game 3)))
+    (is (get-game-depth game) 3)
+    (let ((store (make-moves game)))
+      (is (move-store-count store) 2)
+      (ok (contains-move store 2 4))
+      (ok (contains-move store 4 2)))))
 
 (subtest
     "Test reverse-game"
-  (setf *test-game* (make-nth-test-game 5))
-  (reverse-game *test-game*)
-  (reverse-game *test-game*)
+  (let ((game (make-nth-test-game 5)))
+    (reverse-game game)
+    (reverse-game game)
 
-  (ok (is-game-same-phase *test-game* (make-nth-test-game 3)))
+    (ok (is-game-same-phase game (make-nth-test-game 3)))
 
-  (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 3)
-                          (make-nth-test-game 3)))
-  (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 0)
-                          (init-game)))
-  (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 8)
-                          (make-nth-test-game 5)))
-  (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) -2)
-                          (init-game))))
+    (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 3)
+                            (make-nth-test-game 3)))
+    (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 0)
+                            (init-game)))
+    (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) 8)
+                            (make-nth-test-game 5)))
+    (ok (is-game-same-phase (reverse-game-to-depth (make-nth-test-game 5) -2)
+                            (init-game)))))
+
 (subtest
     "Test funcs about the game end"
   (ok (not (is-game-end (init-game))))
@@ -93,21 +93,20 @@
       (test 30 30 +empty+)
       (test 32 32 +empty+))))
 
-
 (subtest
     "Test do-in-move-reverse"
-  (setf *test-game* (make-nth-test-game 3))
-  (is (do-in-move-reverse *test-game* (make-a-move 2 4)
-        (let ((test-par 2))
-          (* (get-game-depth *test-game*) test-par))) 8)
-  (is (do-in-move-reverse *test-game* (make-a-move 2 4)
-        (do-in-move-reverse *test-game* (make-a-move 5 5)
-          (get-game-depth *test-game*)))
-      5)
-  (is-error (do-in-move-reverse *test-game* (make-a-move 5 5)
-              (print 'empty))
-            'simple-error)
-  (is (get-game-depth *test-game*) 3))
+  (let ((game (make-nth-test-game 3)))
+    (is (do-in-move-reverse game (make-a-move 2 4)
+          (let ((test-par 2))
+            (* (get-game-depth game) test-par))) 8)
+    (is (do-in-move-reverse game (make-a-move 2 4)
+          (do-in-move-reverse game (make-a-move 5 5)
+            (get-game-depth game)))
+        5)
+    (is-error (do-in-move-reverse game (make-a-move 5 5)
+                (print 'empty))
+              'simple-error)
+    (is (get-game-depth game) 3)))
 
 (subtest
     "Test print-game"
