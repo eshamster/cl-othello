@@ -7,6 +7,8 @@
            :history-record-reverse-list
            :init-history-record
            :history-record-store
+           :history-record-store-count
+           :history-record-store-records
            :init-history-record-store
            :push-history-record
            :pop-history-record

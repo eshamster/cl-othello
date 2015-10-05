@@ -17,11 +17,6 @@
       (ok (move-p (history-record-move record)))
       (is-type (history-record-reverse-list record) 'move-store))))
 
-(defun history-record-store-count (store)
-  (cl-othello.history-record::history-record-store-count store))
-(defun history-record-store-records (store)
-  (cl-othello.history-record::history-record-store-records store))
-
 (subtest
     "Test history-record-store"
   (labels ((test-count (store expected)

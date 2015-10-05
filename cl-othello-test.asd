@@ -15,13 +15,15 @@
                :prove)
   :components ((:module "t"
                 :components
-                ((:test-file "defines")
+                ((:file "test-utils")
+                 (:test-file "defines")
                  (:test-file "utils")
                  (:test-file "tree")
                  (:test-file "move")
                  (:test-file "move-store")
                  (:test-file "history-record")
                  (:test-file "board")
+                 (:test-file "game")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 

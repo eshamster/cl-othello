@@ -6,9 +6,11 @@
            :is-in-board
            :get-piece
            :make-moves-on-board
+           :set-to-board
            :move-on-board
            :count-piece
-           :print-board)
+           :print-board
+           :check-move-valid)
   (:import-from :cl-othello.utils
                 :aif-second-true
                 :it)
@@ -90,7 +92,8 @@
 (defun is-invalid-pnt-turn (x y turn)
   (or (is-empty turn)
       (not (is-in-board x y))))
-	   
+	  
+; TODO: make a test 
 (defun check-move-valid(board x y turn)
   (if (or (is-invalid-pnt-turn x y turn)
 	  (not (is-empty (get-piece board x y))))
