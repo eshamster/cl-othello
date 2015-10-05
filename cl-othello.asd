@@ -28,6 +28,7 @@
                  (:file "board")
                  (:file "game")
                  (:file "eval-board")
+                 (:file "minimax")
                  (:file "cl-othello"))))
   :description ""
   :long-description
