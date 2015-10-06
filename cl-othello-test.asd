@@ -25,7 +25,7 @@
                  (:test-file "board")
                  (:test-file "game")
                  (:test-file "eval-board")
-                 (:test-file "minimax")
+                 (:test-file "random-move")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 

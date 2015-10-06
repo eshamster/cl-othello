@@ -29,6 +29,7 @@
                  (:file "game")
                  (:file "eval-board")
                  (:file "minimax")
+                 (:file "random-move")
                  (:file "cl-othello"))))
   :description ""
   :long-description

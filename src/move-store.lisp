@@ -13,6 +13,7 @@
            :copy-to-move-store
            :clone-move-store
            :with-cloned-move-store
+           :+max-move-store+
            :contains-move
            :mapcar-move-store)
   (:import-from :cl-othello.move
@@ -24,13 +25,13 @@
                 :+board-size+))
 (in-package :cl-othello.move-store)
 
-(defparameter *max-move-store* (- (* +board-size+ +board-size+) 4))
+(defconstant +max-move-store+ (- (* +board-size+ +board-size+) 4))
 
 (defstruct move-store
   count
   moves)
 
-(defun init-move-store (&key (num-moves *max-move-store*))
+(defun init-move-store (&key (num-moves +max-move-store+))
   (make-move-store :count 0
 		   :moves (make-array num-moves
 				      :initial-contents (let ((lst nil))
