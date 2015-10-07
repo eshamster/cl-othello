@@ -16,7 +16,7 @@
   :version "0.1"
   :author "eshamster"
   :license ""
-  :depends-on ()
+  :depends-on (:string-case)
   :components ((:module "src"
                 :components
                 ((:file "defines")
@@ -32,6 +32,7 @@
                  (:file "random-move")
                  (:file "mc")
                  (:file "uct")
+                 (:file "human")
                  (:file "cl-othello"))))
   :description ""
   :long-description

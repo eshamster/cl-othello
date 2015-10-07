@@ -28,6 +28,7 @@
                  (:test-file "random-move")
                  (:test-file "mc")
                  (:test-file "uct")
+                 (:test-file "human")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
