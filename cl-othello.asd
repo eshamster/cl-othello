@@ -31,6 +31,7 @@
                  (:file "minimax")
                  (:file "random-move")
                  (:file "mc")
+                 (:file "uct")
                  (:file "cl-othello"))))
   :description ""
   :long-description

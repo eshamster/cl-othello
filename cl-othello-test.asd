@@ -27,6 +27,7 @@
                  (:test-file "eval-board")
                  (:test-file "random-move")
                  (:test-file "mc")
+                 (:test-file "uct")
                  (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 

@@ -13,7 +13,8 @@
            :get-tree-size
            :get-tree-depth
            :select-max-child
-           :select-max-node))
+           :select-max-node
+           :print-tree))
 (in-package :cl-othello.tree)
 
 
