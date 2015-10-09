@@ -15,7 +15,22 @@
                :prove)
   :components ((:module "t"
                 :components
-                ((:test-file "cl-othello"))))
+                ((:file "test-utils")
+                 (:test-file "defines")
+                 (:test-file "utils")
+                 (:test-file "tree")
+                 (:test-file "move")
+                 (:test-file "move-store")
+                 (:test-file "history-record")
+                 (:test-file "board")
+                 (:test-file "game")
+                 (:test-file "eval-board")
+                 (:test-file "random-move")
+                 (:test-file "mc")
+                 (:test-file "uct")
+                 (:test-file "human")
+                 (:test-file "player")
+                 (:test-file "cl-othello"))))
   :description "Test system for cl-othello"
 
   :defsystem-depends-on (:prove-asdf)

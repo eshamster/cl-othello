@@ -16,10 +16,27 @@
   :version "0.1"
   :author "eshamster"
   :license ""
-  :depends-on ()
+  :depends-on (:string-case
+               :alexandria
+               :cl-ppcre)
   :components ((:module "src"
                 :components
-                ((:file "cl-othello"))))
+                ((:file "defines")
+                 (:file "utils")
+                 (:file "tree")
+                 (:file "move")
+                 (:file "move-store")
+                 (:file "history-record")
+                 (:file "board")
+                 (:file "game")
+                 (:file "eval-board")
+                 (:file "minimax")
+                 (:file "random-move")
+                 (:file "mc")
+                 (:file "uct")
+                 (:file "human")
+                 (:file "player")
+                 (:file "cl-othello"))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
