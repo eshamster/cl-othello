@@ -5,6 +5,8 @@
            :stream-to-list
            :to-string
            :concat-symbol
+           :symbol-name-with-package
+           :intern-with-package
            :push-without-dup
            :read-line-while
            :aif-second-true
@@ -28,6 +30,8 @@
 (defgeneric to-string (target))
 (defmethod to-string (target)
   (format nil "~A" target))
+(defmethod to-string ((target symbol))
+  (symbol-name-with-package target))
 (defmethod to-string ((target function))
   (error 'simple-error))
 
@@ -38,6 +42,18 @@
     (dolist (x symbols)
       (setf str (concatenate 'string str (symbol-name x))))
     (intern str)))
+
+(defun symbol-name-with-package (symbol)
+  (format nil "~A:~A"
+          (package-name (symbol-package symbol))
+          (symbol-name symbol)))
+
+(defun intern-with-package (str)
+  (let ((splitted (ppcre:split ":" str)))
+    (case (length splitted)
+      (1 (intern (car splitted)))
+      (2 (intern (cadr splitted) (car splitted)))
+      (t 'simple-error))))
 
 (defun push-without-dup (target lst fn-equal)
   (if (null target)

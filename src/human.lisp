@@ -20,9 +20,9 @@
     (move-game game x y)))
 
 (defun eval-play-command (game com-list)
-  (string-case:string-case ((car com-list))
-    ("print" (print-game game) nil)
-    ("reverse" (reverse-game game))
-    ("move" (exec-move-com game (cdr com-list)))
+  (string-case:string-case ((string-upcase (car com-list)))
+    ("PRINT" (print-game game) nil)
+    ("REVERSE" (reverse-game game))
+    ("MOVE" (exec-move-com game (cdr com-list)))
     (t (format t "The command \"~A\" is not defined.~%" (car com-list))
        nil)))

@@ -5,7 +5,7 @@
         :prove))
 (in-package :cl-othello-test.utils)
 
-(plan 7)
+(plan 8)
 
 (subtest
     "Test string-to-list"
@@ -24,7 +24,8 @@
   (is (to-string "test") "test")
   (is (to-string 123) "123")
   (is-error (to-string #'+) 'simple-error)
-  (is (to-string 'test) "TEST"))
+  (is (to-string 'car) "COMMON-LISP:CAR")
+  (is (to-string 'test) "CL-OTHELLO-TEST.UTILS:TEST"))
 
 (subtest
     "Test concat-symbol"
@@ -32,6 +33,22 @@
   (is (concat-symbol 'abc) 'abc)
   (is (concat-symbol 'abc- 'def) 'abc-def)
   (is (concat-symbol 'abc- 'def 'gh) 'abc-defgh))
+
+(subtest
+    "Test processing of symbol-name"
+  (subtest
+      "Test symbol-name-with-package"
+    (is (symbol-name-with-package 'car) "COMMON-LISP:CAR" :test #'equal)
+    (is (symbol-name-with-package 'symbol-name-with-package)
+        "CL-OTHELLO.UTILS:SYMBOL-NAME-WITH-PACKAGE" :test #'equal)
+    (is (symbol-name-with-package 'cl-othello.utils:symbol-name-with-package)
+        "CL-OTHELLO.UTILS:SYMBOL-NAME-WITH-PACKAGE" :test #'equal))
+  (subtest
+      "Test intern-with-package"
+    (is (intern-with-package "CAR") 'car :test #'equal)
+    (is (intern-with-package "INTERN-WITH-PACKAGE") 'intern-with-package :test #'equal)
+    (is (intern-with-package "CL-OTHELLO.UTILS:INTERN-WITH-PACKAGE")
+        'cl-othello.utils:intern-with-package :test #'equal)))
 
 (subtest
     "Test push-without-dup"

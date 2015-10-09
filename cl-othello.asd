@@ -16,7 +16,9 @@
   :version "0.1"
   :author "eshamster"
   :license ""
-  :depends-on (:string-case)
+  :depends-on (:string-case
+               :alexandria
+               :cl-ppcre)
   :components ((:module "src"
                 :components
                 ((:file "defines")
@@ -33,6 +35,7 @@
                  (:file "mc")
                  (:file "uct")
                  (:file "human")
+                 (:file "player")
                  (:file "cl-othello"))))
   :description ""
   :long-description

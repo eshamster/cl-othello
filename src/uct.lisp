@@ -17,6 +17,7 @@
            :select-uct-child
            :make-uct-param
            :uct-param-expand-intv
+           :uct-param-ucb-coef
            :make-default-uct-param
            :*default-uct-param*
            :mcts-simulate-once)
@@ -62,7 +63,7 @@
 (defun make-default-uct-param ()
   (make-uct-param :expand-intv 2
                   :ucb-coef 1
-                  :fn-make-policy #'make-uniform-policy))
+                  :fn-make-policy 'make-uniform-policy))
   
 (defparameter *default-uct-param* (make-default-uct-param))
 
