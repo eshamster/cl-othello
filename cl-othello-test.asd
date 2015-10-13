@@ -12,7 +12,8 @@
   :author "eshamster"
   :license ""
   :depends-on (:cl-othello
-               :prove)
+               :prove
+               :cl-ppcre)
   :components ((:module "t"
                 :components
                 ((:file "test-utils")
@@ -25,6 +26,7 @@
                  (:test-file "board")
                  (:test-file "game")
                  (:test-file "eval-board")
+                 (:test-file "minimax")
                  (:test-file "random-move")
                  (:test-file "mc")
                  (:test-file "uct")

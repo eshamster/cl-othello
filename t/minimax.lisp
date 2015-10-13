@@ -11,11 +11,6 @@
         :prove))
 (in-package :cl-othello-test.minimax)
 
-(defun minimax-node-score (node)
-  (cl-othello.minimax::minimax-node-score node))
-(defun minimax-node-move (node)
-  (cl-othello.minimax::minimax-node-move node))
-
 (plan 3)
 
 (subtest
@@ -23,13 +18,13 @@
   (subtest
       "Check selection"
     (labels ((get-score (node)
-               (minimax-node-score (get-node-value node)))
+               ($:minimax-node-score (get-node-value node)))
              (prove-selection (game node)
                (is (get-score node)
                    (get-score
                     (select-max-child
                      #'(lambda (child)
-                         (* (minimax-node-score child)
+                         (* ($:minimax-node-score child)
                             (if (= (game-turn game) +white+) 1 -1)))
                      node))))   
              (test-at (start-depth)
@@ -43,7 +38,7 @@
                  (is (get-game-depth game) first-game-depth)
                  (do-children (child eval-tree)
                    (do-in-move-reverse game
-                     (minimax-node-move (get-node-value child))
+                     ($:minimax-node-move (get-node-value child))
                      (prove-selection game child))))))
       (test-at 4)
       (test-at 5)))
@@ -62,7 +57,7 @@
   (subtest
       "Check if the result is same as the one of eval-game-by-minimax"
     (labels ((get-score (node)
-               (minimax-node-score (get-node-value node)))
+               ($:minimax-node-score (get-node-value node)))
              (test (game depth)
                (let ((eval-tree-a (eval-game-by-minimax game depth :is-all-tree t))
                      (eval-tree-b (eval-game-by-ab game depth :is-all-tree t)))

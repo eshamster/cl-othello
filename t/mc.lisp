@@ -11,13 +11,6 @@
         :prove))
 (in-package :cl-othello-test.mc)
 
-(defun sim-to-game-end (game fn-make-policy prob-store)
-  (cl-othello.mc::sim-to-game-end game fn-make-policy prob-store))
-(defmacro mc-node-num (node)
-  `(cl-othello.mc::mc-node-num ,node))
-(defmacro mc-node-sum (node)
-  `(cl-othello.mc::mc-node-sum ,node))
-
 (plan 7)
 
 (subtest
@@ -53,9 +46,9 @@
 (subtest
     "Test sim-to-game-end"
   (let ((prob-store (make-prob-store)))
-    (prove-game-is-end (sim-to-game-end (init-game) #'make-uniform-policy prob-store))
-    (prove-game-is-end (sim-to-game-end (make-nth-test-game 3) #'make-uniform-policy prob-store))
-    (prove-game-is-end (sim-to-game-end (make-nth-test-game 100)  #'make-uniform-policy prob-store))))
+    (prove-game-is-end ($:sim-to-game-end (init-game) #'make-uniform-policy prob-store))
+    (prove-game-is-end ($:sim-to-game-end (make-nth-test-game 3) #'make-uniform-policy prob-store))
+    (prove-game-is-end ($:sim-to-game-end (make-nth-test-game 100)  #'make-uniform-policy prob-store))))
 
 (subtest
     "Test mc-simulate-once"
@@ -70,8 +63,8 @@
 (subtest
     "Test init-mc-nodes"
   (is (init-mc-nodes (make-nth-test-game 3))
-      '(#S(CL-OTHELLO.MC::MC-NODE :MOVE (4 . 2) :SUM 0 :NUM 0)
-        #S(CL-OTHELLO.MC::MC-NODE :MOVE (2 . 4) :SUM 0 :NUM 0)) :test #'equalp)
+      '(#S($:MC-NODE :MOVE (4 . 2) :SUM 0 :NUM 0)
+        #S($:MC-NODE :MOVE (2 . 4) :SUM 0 :NUM 0)) :test #'equalp)
   (defun prove-mc-node-len (start)
     (let ((game (make-nth-test-game start)))
       (is (length (init-mc-nodes game)) (move-store-count (make-moves game)))))
@@ -87,8 +80,8 @@
            (len (length mc-node)))
       (when (<= len 0) (return-from prove-all-node-selected-in-ucb t))
       (dotimes (x len)
-        (incf (mc-node-num (select-mc-node-by-ucb mc-node x)) 1))
-      (ok (every #'(lambda(node) (= (mc-node-num node) 1)) mc-node))))
+        (incf ($:mc-node-num (select-mc-node-by-ucb mc-node x)) 1))
+      (ok (every #'(lambda(node) (= ($:mc-node-num node) 1)) mc-node))))
   (prove-all-node-selected-in-ucb 2)
   (prove-all-node-selected-in-ucb 3)
 
@@ -96,9 +89,9 @@
 
 
 (defmacro t-nth-mc-num (n nodes)
-  `(mc-node-num (nth ,n ,nodes)))
+  `($:mc-node-num (nth ,n ,nodes)))
 (defmacro t-nth-mc-sum (n nodes)
-  `(mc-node-sum (nth ,n ,nodes)))
+  `($:mc-node-sum (nth ,n ,nodes)))
 (subtest
     "Test select-mc-node-by-ave"
   (let ((test-mc-nodes (init-mc-nodes (make-nth-test-game 57))))
@@ -108,10 +101,10 @@
     (setf (t-nth-mc-num 0 test-mc-nodes) 5)
     (setf (t-nth-mc-sum 2 test-mc-nodes) -7)
     (setf (t-nth-mc-num 2 test-mc-nodes) 10)
-    (is (mc-node-sum (select-mc-node-by-ave test-mc-nodes)) -2)
+    (is ($:mc-node-sum (select-mc-node-by-ave test-mc-nodes)) -2)
     
     (setf (t-nth-mc-sum 2 test-mc-nodes) 3)
-    (is (mc-node-sum (select-mc-node-by-ave test-mc-nodes)) 3)))
+    (is ($:mc-node-sum (select-mc-node-by-ave test-mc-nodes)) 3)))
   
 (subtest
     "Test mc-simulate"
