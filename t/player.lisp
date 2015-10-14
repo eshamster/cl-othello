@@ -24,7 +24,7 @@
     (is (fit-type-to 'abc 'test) 'test)
     (is-error (fit-type-to 'abc "test") 'error)))
 
-(defparameter *all-player-kind* '("human" "minimax" "random" "mc" "uct"))
+(defparameter *all-player-kind* '(:human :minimax :random :mc :uct))
 
 (subtest
     "Test consturct-player"
@@ -34,7 +34,7 @@
       (ok (subtypep (type-of (construct-player "test" kind)) 'player))))
   (subtest
       "Test for not-existing player"
-    (is (construct-player "test" "not-exist") nil)))
+    (is (construct-player "test" :not-exist) nil)))
 
 (subtest
     "Test serialize and deserialize player"
@@ -67,17 +67,17 @@
                      (ok (funcall mover game opt)))
                  (is (get-game-depth game) (1+ start-depth)))))
       (let ((move (get-nth-move 0 (make-moves (make-nth-test-game start-depth)))))
-        (test "human" (make-string-input-stream
+        (test :human (make-string-input-stream
                        (format nil "print~%move ~D ~D" (car move) (cdr move)))))
-      (dolist (kind (remove "human" *all-player-kind* :test #'equal))
+      (dolist (kind (remove :human *all-player-kind* :test #'equal))
         (test kind)))))
 
 (subtest
     "Test find-player-by-name"
-  (let* ((found (construct-player "test" "mc"))
-         (lst (list (construct-player "abcd" "human")
+  (let* ((found (construct-player "test" :mc))
+         (lst (list (construct-player "abcd" :human)
                     found
-                    (construct-player "xyz" "uct"))))
+                    (construct-player "xyz" :uct))))
     (is (find-player-by-name "test" lst) found :test #'equalp)
     (isnt (find-player-by-name "abcd" lst) found :test #'equalp)
     (ok (null (find-player-by-name "not-found" lst)))))

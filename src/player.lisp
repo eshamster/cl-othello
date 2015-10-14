@@ -2,12 +2,15 @@
 (defpackage cl-othello.player
   (:use :cl)
   (:export :player
+           :player-name
+           :player-kind
            :player-params
            :fit-type-to
            :construct-player
            :player-serialize
            :player-deserialize
            :player-make-mover
+           :player-set-param
            :find-player-by-name)
   (:import-from :cl-othello.utils
                 :concat-symbol
@@ -62,7 +65,7 @@
 (defun construct-player (name kind)
   (handler-case 
       (let ((result (make-instance (intern (string-upcase
-                                            (concatenate 'string kind "-player"))
+                                            (concatenate 'string (symbol-name kind) "-player"))
                                            "CL-OTHELLO.PLAYER"))))
         (setf (player-name result) (to-string name))
         (setf (player-kind result) kind)
@@ -70,7 +73,7 @@
         result)
     (simple-error (e) (print e) nil)))
   
-(defmethod player-serialize ((target player))
+(defun player-serialize (target)
   (let ((result nil))
     (setf result (concatenate 'string (player-name target) " " (to-string (player-kind target)) " "))
     (maphash #'(lambda (k v)
@@ -81,7 +84,7 @@
 (defun player-deserialize (str)
   (let* ((lst (string-to-list str))
          (name (symbol-name (car lst)))
-         (kind (symbol-name (cadr lst)))
+         (kind (cadr lst))
          (params (cddr lst))
          (result (construct-player name kind)))
     (labels ((set-params (lst)
@@ -92,6 +95,7 @@
                (set-params (cddr lst))))
       (set-params params))))
 
+(defgeneric fit-type-to (right-value target))
 (defmethod fit-type-to ((right-value number) (target number))
   (declare (ignore right-value))
   target)
@@ -105,7 +109,7 @@
   (declare (ignore right-value))
   target)
 
-(defmethod player-set-param ((target player) (key symbol) value)
+(defun player-set-param (target key value)
   (multiple-value-bind (old-value exists) (gethash key (player-params target))
     (unless exists
       (error (format t "The key \"~A\" is not exists" key)))
@@ -113,6 +117,8 @@
 
 (defun find-player-by-name (name lst)
   (find-if #'(lambda (plyr) (equalp name (player-name plyr))) lst))
+
+(defgeneric player-make-mover (target))
 
 ; --------- human --------- ;
 
