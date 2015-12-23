@@ -43,8 +43,8 @@
   (subtest
       "Test error"
     (let ((game (init-game)))
-      (is-error (move-game game) 'error)
-      (is-error (move-game game 1 2 3) 'error))))
+      (prove-macro-expand-error (move-game game) 'simple-error)
+      (prove-macro-expand-error (move-game game 1 2 3) 'simple-error))))
 
 (subtest
     "Test is-game-same-phase"

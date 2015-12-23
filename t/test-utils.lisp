@@ -3,7 +3,8 @@
   (:use :cl)
   (:export :make-nth-test-game
            :within
-           :prove-in)
+           :prove-in
+           :prove-macro-expand-error)
   (:import-from :cl-othello.game
                 :init-game
                 :move-game)
@@ -53,3 +54,7 @@
 
 (defmacro prove-in (val list)
   `(prove:ok (member ,val ,list)))
+
+(defmacro prove-macro-expand-error (code expected-error)
+  `(prove:is-error (macroexpand-1 ',code)
+                   ,expected-error))
