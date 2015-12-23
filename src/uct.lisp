@@ -4,16 +4,10 @@
         :cl-othello.defines
         :cl-othello.tree)
   (:export :uct-simulate
-           :uct-node
            :uct-node-num
            :uct-node-sum
-           :uct-node-p
-           :uct-node-unexpanded-moves
-           :uct-node-move-from-parent
-           :make-a-uct-node
            :expand-child-if-needed
            :reflect-sim-result
-           :select-uct-node-by-ave
            :select-uct-child
            :make-uct-param
            :uct-param-expand-intv

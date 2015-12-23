@@ -3,6 +3,7 @@
   (:use :cl
         :cl-othello.move
         :cl-othello.move-store
+        :cl-othello-test.test-utils
         :prove))
 
 (in-package :cl-othello-test.move-store)
@@ -62,7 +63,7 @@
       (add-to-move-store store 1 2)
       (add-to-move-store store 3 4)
       
-      (is-type (copy-to-move-store deep-copy store) 'move-store)
+      (is-type ($:copy-to-move-store deep-copy store) 'move-store)
       (test-isnt-same deep-copy store)
 
       (is-type (clone-move-store store) 'move-store)

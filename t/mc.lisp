@@ -15,12 +15,12 @@
 
 (subtest
     "Test calc-ucb"
-  (ok (= (calc-ucb 2  0 10) +ucb-max+))
-  (ok (= (calc-ucb 2 -2 10) +ucb-max+))
-  (ok (= (calc-ucb 2 10  0) +ucb-max+))
-  (ok (= (calc-ucb 2 10 -2) +ucb-max+))
-  (ok (= (calc-ucb 2 -2 -2) +ucb-max+))
-  (ok (< (calc-ucb -2 10 10) +ucb-max+))
+  (ok (= (calc-ucb 2  0 10) $:+ucb-max+))
+  (ok (= (calc-ucb 2 -2 10) $:+ucb-max+))
+  (ok (= (calc-ucb 2 10  0) $:+ucb-max+))
+  (ok (= (calc-ucb 2 10 -2) $:+ucb-max+))
+  (ok (= (calc-ucb 2 -2 -2) $:+ucb-max+))
+  (ok (< (calc-ucb -2 10 10) $:+ucb-max+))
 
   (ok (< (calc-ucb 2 2 2)
                (calc-ucb 4 2 2)))
@@ -62,12 +62,12 @@
 
 (subtest
     "Test init-mc-nodes"
-  (is (init-mc-nodes (make-nth-test-game 3))
+  (is ($:init-mc-nodes (make-nth-test-game 3))
       '(#S($:MC-NODE :MOVE (4 . 2) :SUM 0 :NUM 0)
         #S($:MC-NODE :MOVE (2 . 4) :SUM 0 :NUM 0)) :test #'equalp)
   (defun prove-mc-node-len (start)
     (let ((game (make-nth-test-game start)))
-      (is (length (init-mc-nodes game)) (move-store-count (make-moves game)))))
+      (is (length ($:init-mc-nodes game)) (move-store-count (make-moves game)))))
   (prove-mc-node-len 5)
   (prove-mc-node-len 34)
   (prove-mc-node-len 100))
@@ -76,11 +76,11 @@
     "Test select-mc-node-by-ucb"
   (defun prove-all-node-selected-in-ucb (start)
     (let* ((game (make-nth-test-game start))
-           (mc-node (init-mc-nodes game))
+           (mc-node ($:init-mc-nodes game))
            (len (length mc-node)))
       (when (<= len 0) (return-from prove-all-node-selected-in-ucb t))
       (dotimes (x len)
-        (incf ($:mc-node-num (select-mc-node-by-ucb mc-node x)) 1))
+        (incf ($:mc-node-num ($:select-mc-node-by-ucb mc-node x)) 1))
       (ok (every #'(lambda(node) (= ($:mc-node-num node) 1)) mc-node))))
   (prove-all-node-selected-in-ucb 2)
   (prove-all-node-selected-in-ucb 3)
@@ -94,17 +94,17 @@
   `($:mc-node-sum (nth ,n ,nodes)))
 (subtest
     "Test select-mc-node-by-ave"
-  (let ((test-mc-nodes (init-mc-nodes (make-nth-test-game 57))))
+  (let ((test-mc-nodes ($:init-mc-nodes (make-nth-test-game 57))))
     (assert (= (length test-mc-nodes) 3))
     
     (setf (t-nth-mc-sum 0 test-mc-nodes) -2)
     (setf (t-nth-mc-num 0 test-mc-nodes) 5)
     (setf (t-nth-mc-sum 2 test-mc-nodes) -7)
     (setf (t-nth-mc-num 2 test-mc-nodes) 10)
-    (is ($:mc-node-sum (select-mc-node-by-ave test-mc-nodes)) -2)
+    (is ($:mc-node-sum ($:select-mc-node-by-ave test-mc-nodes)) -2)
     
     (setf (t-nth-mc-sum 2 test-mc-nodes) 3)
-    (is ($:mc-node-sum (select-mc-node-by-ave test-mc-nodes)) 3)))
+    (is ($:mc-node-sum ($:select-mc-node-by-ave test-mc-nodes)) 3)))
   
 (subtest
     "Test mc-simulate"

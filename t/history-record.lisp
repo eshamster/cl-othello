@@ -4,6 +4,7 @@
         :cl-othello.move
         :cl-othello.move-store
         :cl-othello.history-record
+        :cl-othello-test.test-utils
         :prove))
 (in-package :cl-othello-test.history-record)
 
@@ -13,7 +14,7 @@
     "Test history-record"
   (subtest
       "Test make"
-    (let ((record (init-history-record)))
+    (let ((record ($:init-history-record)))
       (ok (move-p (history-record-move record)))
       (is-type (history-record-reverse-list record) 'move-store))))
 

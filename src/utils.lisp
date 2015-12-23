@@ -5,8 +5,6 @@
            :stream-to-list
            :to-string
            :concat-symbol
-           :symbol-name-with-package
-           :intern-with-package
            :push-without-dup
            :read-line-while
            :aif-second-true
@@ -47,13 +45,6 @@
   (format nil "~A:~A"
           (package-name (symbol-package symbol))
           (symbol-name symbol)))
-
-(defun intern-with-package (str)
-  (let ((splitted (ppcre:split ":" str)))
-    (case (length splitted)
-      (1 (intern (car splitted)))
-      (2 (intern (cadr splitted) (car splitted)))
-      (t 'simple-error))))
 
 (defun push-without-dup (target lst fn-equal)
   (if (null target)

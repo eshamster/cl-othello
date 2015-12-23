@@ -5,7 +5,6 @@
            :history-record-turn
            :history-record-move
            :history-record-reverse-list
-           :init-history-record
            :history-record-store
            :history-record-store-count
            :history-record-store-records
