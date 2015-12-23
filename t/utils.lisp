@@ -35,22 +35,6 @@
   (is (concat-symbol 'abc- 'def 'gh) 'abc-defgh))
 
 (subtest
-    "Test processing of symbol-name"
-  (subtest
-      "Test symbol-name-with-package"
-    (is (symbol-name-with-package 'car) "COMMON-LISP:CAR" :test #'equal)
-    (is (symbol-name-with-package 'symbol-name-with-package)
-        "CL-OTHELLO.UTILS:SYMBOL-NAME-WITH-PACKAGE" :test #'equal)
-    (is (symbol-name-with-package 'cl-othello.utils:symbol-name-with-package)
-        "CL-OTHELLO.UTILS:SYMBOL-NAME-WITH-PACKAGE" :test #'equal))
-  (subtest
-      "Test intern-with-package"
-    (is (intern-with-package "CAR") 'car :test #'equal)
-    (is (intern-with-package "INTERN-WITH-PACKAGE") 'intern-with-package :test #'equal)
-    (is (intern-with-package "CL-OTHELLO.UTILS:INTERN-WITH-PACKAGE")
-        'cl-othello.utils:intern-with-package :test #'equal)))
-
-(subtest
     "Test push-without-dup"
   (is (push-without-dup 3 '(1 2) #'=) '(1 2 3))
   (is (push-without-dup 1 '(1 2) #'=) '(1 2))

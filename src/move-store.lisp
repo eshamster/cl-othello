@@ -3,14 +3,12 @@
   (:use :cl)
   (:export :move-store
            :init-move-store
-           :move-store-stack
            :init-move-store-stack
            :add-to-move-store
            :move-store-count
            :reset-move-store
            :do-move-store
            :get-nth-move
-           :copy-to-move-store
            :clone-move-store
            :with-cloned-move-store
            :+max-move-store+

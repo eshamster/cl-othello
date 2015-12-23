@@ -5,7 +5,6 @@
            :player-name
            :player-kind
            :player-params
-           :fit-type-to
            :construct-player
            :player-serialize
            :player-deserialize

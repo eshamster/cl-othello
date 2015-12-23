@@ -4,12 +4,7 @@
         :cl-othello.defines)
   (:export :calc-ucb
            :mc-simulate-once
-           :init-mc-nodes
-           :select-mc-node-by-ucb
-           :select-mc-node-by-ave
-           :mc-simulate
-           :+ucb-max+
-           :+ucb-min+)
+           :mc-simulate)
   (:import-from :cl-othello.tree
                 :select-max-node)
   (:import-from :cl-othello.move

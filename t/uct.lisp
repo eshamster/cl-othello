@@ -16,11 +16,11 @@
 
 (subtest
     "Test make-a-uct-node"
-  (ok (listp (make-a-uct-node nil)))
-  (ok (uct-node-p (car (make-a-uct-node (make-a-move 3 4))))))
+  (ok (listp ($:make-a-uct-node nil)))
+  (ok ($:uct-node-p (car ($:make-a-uct-node (make-a-move 3 4))))))
 
 (defun make-expanded-node (game visit-times intv)
-  (let ((tree (make-a-uct-node nil))
+  (let ((tree ($:make-a-uct-node nil))
         (param (make-uct-param :expand-intv intv)))
     (dotimes (x visit-times)
       (setf (uct-node-num (get-node-value tree)) (+ x 1))
@@ -49,7 +49,7 @@
     (dolist (x '(4 5))
       (let ((game (make-nth-test-game x)))
         (dolist (tree (get-children (make-expanded-node game 20 1)))
-          (let ((move (uct-node-move-from-parent (get-node-value tree))))
+          (let ((move ($:uct-node-move-from-parent (get-node-value tree))))
             (ok (check-move-valid (game-board game)
                                         (car move)
                                         (cdr move)
@@ -107,7 +107,7 @@
       (incf count 1))
 
     (labels ((prove-select (turn target-idx)
-               (is (select-uct-node-by-ave turn tree)
+               (is ($:select-uct-node-by-ave turn tree)
                          (get-nth-child target-idx tree)
                          :test #'equalp)))
       (subtest
@@ -124,7 +124,7 @@
 
 (subtest
     "Test reflect-sim-result"
-  (let ((tree (make-a-uct-node nil))
+  (let ((tree ($:make-a-uct-node nil))
         (game (init-game))
         (uct-param (make-default-uct-param)))
     (is (reflect-sim-result game tree uct-param -1) -1)
@@ -138,7 +138,7 @@
 (subtest
     "Test mcts-simulate-once"
   (let ((test-game (make-nth-test-game 4))
-        (uct-node (make-a-uct-node nil))
+        (uct-node ($:make-a-uct-node nil))
         (uct-param (make-default-uct-param)))
     (setf (uct-param-expand-intv uct-param) 2)
     (dotimes (x 100)

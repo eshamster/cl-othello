@@ -14,15 +14,15 @@
     "Test fit-type-to"
   (subtest
       "number"
-    (is (fit-type-to 12 '111) 111)
-    (is-error (fit-type-to 12 'not-number) 'simple-error))
+    (is ($:fit-type-to 12 '111) 111)
+    (is-error ($:fit-type-to 12 'not-number) 'simple-error))
   (subtest
       "string"
-    (is (fit-type-to "str" 'test) "TEST"))
+    (is ($:fit-type-to "str" 'test) "TEST"))
   (subtest
       "others"
-    (is (fit-type-to 'abc 'test) 'test)
-    (is-error (fit-type-to 'abc "test") 'error)))
+    (is ($:fit-type-to 'abc 'test) 'test)
+    (is-error ($:fit-type-to 'abc "test") 'error)))
 
 (defparameter *all-player-kind* '(:human :minimax :random :mc :uct))
 

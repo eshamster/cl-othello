@@ -2,15 +2,9 @@
 (defpackage cl-othello.random-move
   (:use :cl)
   (:export :make-uniform-policy
-           :decide-move-by-random-policy
            :move-by-random-policy
            :prob-store
-           :prob-store-count
-           :make-prob-store
-           :reset-prob-store
-           :get-nth-prob
-           :add-to-prob-store
-           :do-prob-store)
+           :make-prob-store)
   (:import-from :cl-othello.move
                 :move-x
                 :move-y)
