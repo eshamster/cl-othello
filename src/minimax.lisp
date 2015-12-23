@@ -7,7 +7,6 @@
            :eval-game-by-ab
            :select-move-by-minimax)
   (:import-from :cl-othello.move
-                :make-a-move
                 :clone-move)
   (:import-from :cl-othello.move-store
                 :init-move-store-stack
@@ -75,7 +74,7 @@
                                (setf able-to-cut t)))))
                        (if (and uses-ab able-to-cut) (return-from move-loop)))))
                  (set-score parent best-score))))
-      (let ((node (make-a-node (make-a-move -1 -1))))
+      (let ((node (make-a-node nil)))
         (eval-recurse node depth nil nil)
         node))))
 

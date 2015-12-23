@@ -20,8 +20,6 @@
   (:import-from :cl-othello.move-store
                 :move-store-count
                 :mapcar-move-store)
-  (:import-from :cl-othello.board
-                :check-move-valid)
   (:import-from :cl-othello.game
                 :game-board
                 :game-turn
