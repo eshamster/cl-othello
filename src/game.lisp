@@ -42,7 +42,9 @@
                 :pop-history-record
                 :history-record-store-records
                 :history-record-store-count
-                :do-history-record-store))
+                :do-history-record-store)
+  (:import-from :alexandria
+                :with-gensyms))
 (in-package :cl-othello.game)
 
 (defstruct game
@@ -81,11 +83,11 @@
 	    turn
 	    0))))
 
-(defun move-game (game x y)
+(defun move-game-by-xy (game x y)
   (let ((board (game-board game))
 	(turn (game-turn game)))
     (unless (check-move-valid board x y turn)
-      (return-from move-game nil))
+      (return-from move-game-by-xy nil))
     (push-history-record
      (game-history game)
      #'(lambda (record)
@@ -98,6 +100,17 @@
 	   t)))
     (setf (game-turn game) (judge-next-turn game))
     game))
+
+;; TODO: add test
+(defmacro move-game (game &rest rest)
+  (case (length rest)
+    (1 (if (atom (car rest))
+           `(move-game-by-xy ,game (move-x ,(car rest)) (move-y ,(car rest)))
+           (with-gensyms (move)
+             `(let ((,move ,(car rest)))
+                (move-game-by-xy ,game (move-x ,move) (move-y ,move))))))
+    (2 `(move-game-by-xy ,game ,(car rest) ,(cadr rest)))
+    (t (error "move-game takes 2 or 3 arguments (got ~D argument[s])" (length rest)))))
 
 (defun reverse-game (game)
   (if (<= (get-game-depth game) 0) (return-from reverse-game nil))
@@ -133,7 +146,7 @@
        (unless (check-move-valid
 		(game-board ,g-game) (car ,g-move) (cdr ,g-move) (game-turn ,g-game))
 	   (error (format nil "ERROR: An Invalid Move! (~A)" ,g-move)))
-       (move-game ,g-game (car ,g-move) (cdr ,g-move))
+       (move-game ,g-game ,g-move)
        (let ((,result (progn ,@body)))
 	 (reverse-game ,g-game)
 	 ,result))))
