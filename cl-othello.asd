@@ -20,6 +20,7 @@
                :alexandria
                :cl-ppcre)
   :components ((:module "src"
+                :serial t
                 :components
                 ((:file "defines")
                  (:file "utils")
