@@ -4,6 +4,7 @@
         :cl-othello.board
         :cl-othello.defines
         :cl-othello.move-store
+        :cl-othello-test.test-utils
         :prove))
 (in-package :cl-othello-test.board)
 
@@ -27,16 +28,10 @@
   (ok (not (is-in-board nil 4)))
   (ok (not (is-in-board 3 nil))))
 
-(defun get-next-x (x dir)
-  (cl-othello.board::get-next-x x dir))
-
-(defun get-next-y (y dir)
-  (cl-othello.board::get-next-y y dir))
-
 (subtest
     "Test get-next-x, y"
   (labels ((get-next-cell (x y dir)
-	     (cons (get-next-x x dir) (get-next-y y dir))))
+	     (cons ($:get-next-x x dir) ($:get-next-y y dir))))
     (is (get-next-cell 1 2 +dir-down+)  '(1 . 3))
     (is (get-next-cell 1 2 +dir-up+)    '(1 . 1))
     (is (get-next-cell 1 2 +dir-right+) '(2 . 2))

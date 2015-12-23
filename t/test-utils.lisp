@@ -6,8 +6,19 @@
            :prove-in)
   (:import-from :cl-othello.game
                 :init-game
-                :move-game))
+                :move-game)
+  (:import-from :cl-ppcre
+                :regex-replace))
 (in-package :cl-othello-test.test-utils)
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (make-dispatch-macro-character #\$)
+  (set-dispatch-macro-character
+   #\$ #\:
+   #'(lambda (stream &rest rest)
+       (declare (ignore rest))
+       (intern (symbol-name (read stream nil))
+               (regex-replace "-TEST" (package-name *package*) "")))))
 
 ; this record from http://tsplans.com/i/othello/k.cgi?t=0&m=&k=d3c3c4c5f6f5e6e3f4f3e2f1f2g3h4h3h2g4b4b3d1g6g5h6c6a4b6b5d6a7a5a6d2c2c1f7f8c7c8e7d7b2g7h7a1d8a2h8a3g8e8b8a8b788h588h188g288g188b188e1
 (defparameter *test-record*

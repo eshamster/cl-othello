@@ -68,17 +68,11 @@
       (is-type (clone-move-store store) 'move-store)
       (test-isnt-same (clone-move-store store) store))))
 
-(defun num-allocated-move-store-stack (stack)
-  (cl-othello.move-store::num-allocated-move-store-stack stack))
-
-(defun num-reserved-move-store-stack (stack)
-  (cl-othello.move-store::num-reserved-move-store-stack stack))
-
 (subtest
     "Test move-store-stack"
   (labels ((test-stack-num (stack allocated reserved)
-	     (is (num-allocated-move-store-stack stack) allocated)
-	     (is (num-reserved-move-store-stack stack) reserved)))
+	     (is ($:num-allocated-move-store-stack stack) allocated)
+	     (is ($:num-reserved-move-store-stack stack) reserved)))
     (let ((store (init-move-store))
 	  (stack (init-move-store-stack)))
       (test-stack-num stack 0 0)
