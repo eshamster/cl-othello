@@ -157,7 +157,7 @@
   (if (is-game-end game)
       (return-from move-by-minimax))
   (let ((move (select-move-by-minimax game depth #'eval-game-by-ab)))
-    (move-game game (car move) (cdr move))))
+    (move-game game move)))
 
 ; --------- random --------- ;
 
@@ -195,7 +195,7 @@
   (if (is-game-end game)
       (return-from move-by-mc))
   (let ((move (mc-simulate game fn-make-policy times)))
-    (move-game game (car move) (cdr move))))
+    (move-game game move)))
 
 ; --------- uct --------- ;
 
@@ -223,4 +223,4 @@
   (if (is-game-end game)
       (return-from move-by-uct))
   (let ((move (uct-simulate game uct-par times)))
-    (move-game game (car move) (cdr move))))
+    (move-game game move)))

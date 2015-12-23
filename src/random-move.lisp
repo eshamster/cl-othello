@@ -5,9 +5,6 @@
            :move-by-random-policy
            :prob-store
            :make-prob-store)
-  (:import-from :cl-othello.move
-                :move-x
-                :move-y)
   (:import-from :cl-othello.move-store
                 :get-nth-move
                 :move-store-count
@@ -71,5 +68,5 @@
 
 (defun move-by-random-policy (game fn-make-policy &key (prob-store (make-prob-store)))
   (let ((move (decide-move-by-random-policy game fn-make-policy (random 1.0) prob-store)))
-    (move-game game (move-x move) (move-y move))))
+    (move-game game move)))
 
