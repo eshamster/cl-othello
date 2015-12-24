@@ -20,7 +20,10 @@
   (:import-from :cl-othello.move-store
                 :move-store
                 :init-move-store
-                :reset-move-store))
+                :reset-move-store)
+  (:import-from :alexandria
+                :with-gensyms
+                :once-only))
 (in-package :cl-othello.history-record)
 
 (defparameter *max-reverse-list* (* (- +board-size+ 2) 3) )
@@ -59,12 +62,10 @@
   (aref (history-record-store-records store)
 	(history-record-store-count store)))
 
-(defmacro do-history-record-store (name<>store &body body)
-  (let ((i (gensym))
-	(len (gensym))
-	(store (gensym)))
-    `(let* ((,store ,(cadr name<>store))
-	    (,len (history-record-store-count ,store)))
-       (dotimes (,i ,len)
-	 (let ((,(car name<>store) (aref (history-record-store-records ,store) (1- (- ,len ,i)))))
-	   ,@body)))))
+(defmacro do-history-record-store ((record store) &body body)
+  (with-gensyms (i len)
+    (once-only (store)
+      `(let* ((,len (history-record-store-count ,store)))
+         (dotimes (,i ,len)
+           (let ((,record (aref (history-record-store-records ,store) (1- (- ,len ,i)))))
+             ,@body))))))
