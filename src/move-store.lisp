@@ -20,7 +20,9 @@
                 :move-x
                 :move-y)
   (:import-from :cl-othello.defines
-                :+board-size+))
+                :+board-size+)
+  (:import-from :alexandria
+                :once-only))
 (in-package :cl-othello.move-store)
 
 (defconstant +max-move-store+ (- (* +board-size+ +board-size+) 4))
@@ -47,13 +49,12 @@
   (incf (move-store-count store))
   store)
 
-(defmacro do-move-store (arg &body body)
-  (let ((i (gensym))
-	(store (gensym)))
-  `(let ((,store ,(cadr arg)))
-     (dotimes (,i (move-store-count ,store))
-       (let ((,(car arg) (aref (move-store-moves ,store) ,i)))
-	 ,@body)))))
+(defmacro do-move-store ((move store) &body body)
+  (let ((i (gensym)))
+    (once-only (store)
+      `(dotimes (,i (move-store-count ,store))
+        (let ((,move (aref (move-store-moves ,store) ,i)))
+          ,@body)))))
 
 (defun contains-move (store x y)
   (do-move-store (move store)
