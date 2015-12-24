@@ -81,26 +81,25 @@
 (defun init-move-store-stack ()
   (make-move-store-stack))
 
-(defun num-allocated-move-store-stack (stack)
-  (+ (length (move-store-stack-used-store stack))
-     (length (move-store-stack-unused-store stack))))
+(macrolet ((unused (stack) `(move-store-stack-unused-store ,stack))
+           (used (stack) `(move-store-stack-used-store ,stack)))
 
-(defun num-reserved-move-store-stack (stack)
-  (length (move-store-stack-used-store stack)))
+  (defun num-allocated-move-store-stack (stack)
+    (+ (length (used stack))
+       (length (unused stack))))
 
-(defun reserve-move-store-from-stack (stack)
-  (macrolet ((unused (stack) `(move-store-stack-unused-store ,stack))
-	     (used (stack) `(move-store-stack-used-store ,stack)))
+  (defun num-reserved-move-store-stack (stack)
+    (length (used stack)))
+  
+  (defun reserve-move-store-from-stack (stack)
     (when (null (unused stack))
       (setf (used stack) (cons (init-move-store) (used stack)))
       (return-from reserve-move-store-from-stack (car (used stack))))
     (setf (used stack) (cons (car (unused stack)) (used stack)))
     (setf (unused stack) (cdr (unused stack)))
-    (car (used stack))))
-
-(defun free-move-store-to-stack (stack)
-  (macrolet ((unused (stack) `(move-store-stack-unused-store ,stack))
-	     (used (stack) `(move-store-stack-used-store ,stack)))
+    (car (used stack)))
+  
+  (defun free-move-store-to-stack (stack)
     (setf (unused stack) (cons (car (used stack)) (unused stack)))
     (setf (used stack) (cdr (used stack)))))
 
