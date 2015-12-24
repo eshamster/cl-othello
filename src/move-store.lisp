@@ -75,8 +75,8 @@
     dst))
 
 (defstruct move-store-stack
-  unused-store
-  used-store)
+  (unused-store (make-array 0 :fill-pointer 0 :adjustable t))
+  (used-store (make-array 0 :fill-pointer 0 :adjustable t)))
 
 (defun init-move-store-stack ()
   (make-move-store-stack))
@@ -92,16 +92,16 @@
     (length (used stack)))
   
   (defun reserve-move-store-from-stack (stack)
-    (when (null (unused stack))
-      (setf (used stack) (cons (init-move-store) (used stack)))
-      (return-from reserve-move-store-from-stack (car (used stack))))
-    (setf (used stack) (cons (car (unused stack)) (used stack)))
-    (setf (unused stack) (cdr (unused stack)))
-    (car (used stack)))
+    (labels ((push-and-return (store stack)
+               (vector-push-extend store stack)
+               store))
+      (if (= (length (unused stack)) 0)
+          (push-and-return (init-move-store) (used stack))
+          (push-and-return (vector-pop (unused stack)) (used stack)))))
   
   (defun free-move-store-to-stack (stack)
-    (setf (unused stack) (cons (car (used stack)) (unused stack)))
-    (setf (used stack) (cdr (used stack)))))
+    (vector-push-extend (vector-pop (used stack))
+                        (unused stack))))
 
 (defmacro with-cloned-move-store (stack (cloned store) &body body)
   `(let ((,cloned (reserve-move-store-from-stack ,stack)))
