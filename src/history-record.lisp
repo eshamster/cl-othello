@@ -15,6 +15,8 @@
   (:import-from :cl-othello.defines
                 :+empty+
                 :+board-size+)
+  (:import-from :cl-othello.utils
+                :make-list-of-same-value)
   (:import-from :cl-othello.move
                 :make-a-move)
   (:import-from :cl-othello.move-store
@@ -40,10 +42,9 @@
 (defstruct history-record-store
   (count 0)
   (records (make-array *max-history-record*
-		       :initial-contents (let ((lst nil))
-					   (dotimes (i *max-history-record*)
-					     (setf lst (cons (make-history-record) lst)))
-					   lst))))
+		       :initial-contents (make-list-of-same-value
+                                          *max-history-record*
+                                          (make-history-record)))))
 
 (defun init-history-record-store ()
   (make-history-record-store))

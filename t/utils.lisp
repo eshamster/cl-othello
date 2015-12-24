@@ -60,4 +60,12 @@
   (is (aif-second-true (values 1 nil) (+ it 10) 1234)
 	    1234))
 
+(subtest
+    "Test make-list-of-same-value"
+  (is (make-list-of-same-value 4 100) '(100 100 100 100) :test #'equal)
+  (is (let ((count 0))
+        (make-list-of-same-value 4 (progn (incf count) 100))
+        count)
+      4))
+
 (finalize)

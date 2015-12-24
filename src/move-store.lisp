@@ -14,6 +14,8 @@
            :+max-move-store+
            :contains-move
            :mapcar-move-store)
+  (:import-from :cl-othello.utils
+                :make-list-of-same-value)
   (:import-from :cl-othello.move
                 :make-a-move
                 :set-to-move
@@ -34,10 +36,9 @@
 (defun init-move-store (&key (num-moves +max-move-store+))
   (make-move-store :count 0
 		   :moves (make-array num-moves
-				      :initial-contents (let ((lst nil))
-							  (dotimes (i num-moves)
-							    (setf lst (cons (make-a-move 0 0) lst)))
-							  lst))))
+				      :initial-contents (make-list-of-same-value
+                                                         num-moves
+                                                         (make-a-move 0 0)))))
 
 (defun reset-move-store (store)
   (setf (move-store-count store) 0)
