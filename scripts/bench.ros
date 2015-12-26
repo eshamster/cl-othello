@@ -1,0 +1,68 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (ql:quickload :cl-othello)
+  (ql:quickload :cl-othello-test)
+  ;; #+sbcl (sb-profile:profile "CL-OTHELLO.RANDOM-MOVE" "CL-OTHELLO.GAME" "CL-OTHELLO.BOARD" "CL-OTHELLO.DEFINES")
+  )
+
+(defpackage :ros.script.bench.ros.3660042827
+  (:use :cl)
+  (:import-from :cl-othello.player
+                :player-set-param
+                :construct-player
+                :player-make-mover)
+  (:import-from :cl-othello.random-move
+                :make-uniform-policy)
+  (:import-from :cl-othello-test.test-utils
+                :make-nth-test-game))
+(in-package :ros.script.bench.ros.3660042827)
+
+(defmacro do-in-some-boards (&body body)
+  (let ((i (gensym)))
+  `(dolist (,i '(0 10 21 30 41 50 55))
+     (let ((game (make-nth-test-game ,i)))
+       ,@body))))
+
+(defun bench-a-player (title plyr)
+  (print title)
+  (do-in-some-boards
+    (funcall (player-make-mover plyr) game)))
+
+(defun bench-mc ()
+  (let ((plyr (construct-player "test" :mc)))
+    (player-set-param plyr :times 3000)
+    (player-set-param plyr :fn-make-policy 'make-uniform-policy)
+    (bench-a-player "mc-3000" plyr)))
+
+(defun bench-uct ()
+  (let ((plyr (construct-player "test" 'uct)))
+    (player-set-param plyr :times 3000)
+    (player-set-param plyr :ucb-coef (sqrt 2))
+    (player-set-param plyr :expand-intv 2)
+    (player-set-param plyr :fn-make-policy 'make-uniform-policy)
+    (bench-a-player "uct-3000" plyr)))
+
+(defun bench-minimax ()
+  (let ((plyr (construct-player "test" 'minimax)))
+    (player-set-param plyr :depth 6)
+    (bench-a-player "minimax-6" plyr)))
+
+(defparameter *bench-list* (list #'bench-mc
+				 #'bench-uct
+				 #'bench-minimax
+                                 ))
+
+(defun do-all-bench ()
+  (time (mapcar (lambda (fn)
+                  (time (funcall fn)))
+                *bench-list*)))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (do-all-bench)
+  ;; #+sbcl (sb-profile:report)
+  )
