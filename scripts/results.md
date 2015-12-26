@@ -8,6 +8,52 @@
 - Memory: 1GB
 - Lisp Implementation: SBCL/1.2.16
 
+## Optimize is-xxx-dir
+
+2015.12.26
+
+- 100.2 sec -> 89.6 sec
+- 4.89 GB -> 1.82 GB
+
+"mc-3000" 
+Evaluation took:
+  38.405 seconds of real time
+  38.395163 seconds of total run time (38.297178 user, 0.097985 system)
+  [ Run times consist of 0.032 seconds GC time, and 38.364 seconds non-GC time. ]
+  99.97% CPU
+  72 lambdas converted
+  92,174,065,785 processor cycles
+  907,174,368 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  36.924 seconds of real time
+  36.916388 seconds of total run time (36.829401 user, 0.086987 system)
+  [ Run times consist of 0.087 seconds GC time, and 36.830 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  88,620,853,929 processor cycles
+  905,778,672 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  14.251 seconds of real time
+  14.246834 seconds of total run time (14.233836 user, 0.012998 system)
+  99.97% CPU
+  16 lambdas converted
+  34,203,469,032 processor cycles
+  10,756,976 bytes consed
+  
+Evaluation took:
+  89.582 seconds of real time
+  89.560384 seconds of total run time (89.361415 user, 0.198969 system)
+  [ Run times consist of 0.119 seconds GC time, and 89.442 seconds non-GC time. ]
+  99.98% CPU
+  215,003,443,983 processor cycles
+  1,823,863,472 bytes consed
+
 ## 9e138f1b97be1cf47f1918c66e46d70ef7dc2b1b
 
 2015.12.26
