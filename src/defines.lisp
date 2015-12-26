@@ -20,7 +20,9 @@
            :is-up-dir
            :is-down-dir
            :is-right-dir
-           :is-left-dir))
+           :is-left-dir)
+  (:import-from :alexandria
+                :symbolicate))
 (in-package cl-othello.defines)
 
 (defconstant +board-size+ 8)
@@ -57,16 +59,13 @@
 (setf (aref *bit-dir-arr* +dir-left-up+   ) #b1001)
 (setf (aref *bit-dir-arr* +dir-left-down+ ) #b0101)
 
-(defmacro is-target-dir (dir target-bit)
-  `(not (eq 0 (logand
-               (aref *bit-dir-arr* ,dir)
-               ,target-bit))))
+(defmacro def-dir-checker (name target-bit)
+  `(defun ,name (dir)
+     (not (eq 0 (logand
+                 (aref *bit-dir-arr* dir)
+                 ,target-bit)))))
 
-(defun is-up-dir (dir)
-  (is-target-dir dir #b1000))
-(defun is-down-dir (dir)
-  (is-target-dir dir #b0100))
-(defun is-right-dir (dir)
-  (is-target-dir dir #b0010))
-(defun is-left-dir (dir)
-  (is-target-dir dir #b0001))
+(def-dir-checker is-up-dir    #b1000)
+(def-dir-checker is-down-dir  #b0100)
+(def-dir-checker is-right-dir #b0010)
+(def-dir-checker is-left-dir  #b0001)
