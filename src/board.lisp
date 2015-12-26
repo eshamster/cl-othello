@@ -35,8 +35,8 @@
     board))
 
 (defun is-in-board (x y)
-  (declare (optimize (speed 3) (safety 2)))
-  (declare (type fixnum x y))
+  (declare (optimize (speed 3) (safety 2))
+           (fixnum x y))
   (if (and (not (null x)) (not (null y))
        (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))
       t
@@ -58,9 +58,9 @@
 
 ;; Note: If change +board-size+, the expected array size needs to be rewritten
 (defun get-piece(board x y)
-  (declare (optimize (speed 3) (safety 2)))
-  (declare (type (unsigned-byte 4) x y))
-  (declare (type (simple-array fixnum (64)) board))
+  (declare (optimize (speed 3) (safety 2))
+           ((unsigned-byte 4) x y)
+           ((simple-array fixnum (64)) board))
   (if (not (is-in-board x y))
       (return-from get-piece nil))
   (let ((pnt (+ (* x +board-size+) y)))

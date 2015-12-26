@@ -59,9 +59,9 @@
 
 (defmacro def-dir-checker (name target-bit)
   `(defun ,name (dir)
-     (declare (optimize (speed 3) (safety 2)))
-     (declare (type fixnum dir))
-     (declare (type (simple-array fixnum (8)) *bit-dir-arr*))
+     (declare (optimize (speed 3) (safety 2))
+              (fixnum dir)
+              ((simple-array fixnum (8)) *bit-dir-arr*))
      (not (eq 0 (logand
                  (aref *bit-dir-arr* dir)
                  ,target-bit)))))
