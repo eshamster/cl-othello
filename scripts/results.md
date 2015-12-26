@@ -8,6 +8,51 @@
 - Memory: 1GB
 - Lisp Implementation: SBCL/1.2.16
 
+## Optimize get-piecs
+
+- 89.6 sec -> 74.8 sec
+- 1.82 GB -> 1.82 GB
+
+"mc-3000" 
+Evaluation took:
+  32.743 seconds of real time
+  32.735023 seconds of total run time (32.658035 user, 0.076988 system)
+  [ Run times consist of 0.035 seconds GC time, and 32.701 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  78,585,487,938 processor cycles
+  907,170,080 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  30.053 seconds of real time
+  30.046432 seconds of total run time (29.980442 user, 0.065990 system)
+  [ Run times consist of 0.089 seconds GC time, and 29.958 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  72,128,564,166 processor cycles
+  905,778,736 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  11.999 seconds of real time
+  11.997177 seconds of total run time (11.995177 user, 0.002000 system)
+  99.98% CPU
+  16 lambdas converted
+  28,797,392,016 processor cycles
+  10,756,624 bytes consed
+  
+Evaluation took:
+  74.798 seconds of real time
+  74.780632 seconds of total run time (74.634654 user, 0.145978 system)
+  [ Run times consist of 0.124 seconds GC time, and 74.657 seconds non-GC time. ]
+  99.98% CPU
+  179,517,140,637 processor cycles
+  1,823,858,896 bytes consed
+  
+
 ## Optimize is-xxx-dir
 
 2015.12.26

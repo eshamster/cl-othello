@@ -24,9 +24,7 @@
   (ok (not (is-in-board 5 -1)))
   (ok (not (is-in-board -1 3)))
   (ok (not (is-in-board 4 8)))
-  (ok (not (is-in-board 8 4)))
-  (ok (not (is-in-board nil 4)))
-  (ok (not (is-in-board 3 nil))))
+  (ok (not (is-in-board 8 4))))
 
 (subtest
     "Test get-next-x, y"
@@ -47,7 +45,9 @@
     (is (get-piece board 3 3) +black+)
     (is (get-piece board 4 3) +white+)
     (ok (is-empty (get-piece board 0 3)))
-    (ok (null (get-piece board -1 5)))))
+    #+sbcl (is-error (get-piece board -1 5) 'type-error)
+    #-sbcl (ok (null (get-piece board -1 5)))
+    ))
 
 (subtest
     "Test make-moves-on-board"
