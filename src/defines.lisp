@@ -20,9 +20,7 @@
            :is-up-dir
            :is-down-dir
            :is-right-dir
-           :is-left-dir)
-  (:import-from :alexandria
-                :symbolicate))
+           :is-left-dir))
 (in-package cl-othello.defines)
 
 (defconstant +board-size+ 8)
