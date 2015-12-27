@@ -8,6 +8,54 @@
 - Memory: 1GB
 - Lisp Implementation: SBCL/1.2.16
 
+# results
+
+## Optimize decide-move-by-random-policy
+
+2015.12.27
+
+- 74.8 sec -> 69.8 sec
+- 1.82 GB  -> 1.75 GB
+
+"mc-3000" 
+Evaluation took:
+  29.400 seconds of real time
+  29.394530 seconds of total run time (29.311543 user, 0.082987 system)
+  [ Run times consist of 0.034 seconds GC time, and 29.361 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  70,562,404,089 processor cycles
+  873,084,560 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  28.523 seconds of real time
+  28.516665 seconds of total run time (28.422679 user, 0.093986 system)
+  [ Run times consist of 0.095 seconds GC time, and 28.422 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  68,456,288,358 processor cycles
+  869,293,472 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  11.844 seconds of real time
+  11.841200 seconds of total run time (11.840200 user, 0.001000 system)
+  99.97% CPU
+  16 lambdas converted
+  28,427,711,562 processor cycles
+  10,757,472 bytes consed
+  
+Evaluation took:
+  69.770 seconds of real time
+  69.755395 seconds of total run time (69.577422 user, 0.177973 system)
+  [ Run times consist of 0.129 seconds GC time, and 69.627 seconds non-GC time. ]
+  99.98% CPU
+  167,451,730,572 processor cycles
+  1,753,303,584 bytes consed
+
 ## Optimize get-piecs
 
 - 89.6 sec -> 74.8 sec
