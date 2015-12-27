@@ -10,6 +10,52 @@
 
 # results
 
+## Refactor mc-simulate slightly
+
+2015.12.27 (Maybe this improvement is within the error range)
+
+- 69.8 sec -> 68.0 sec
+- 1.75 GB  -> 1.75 GB
+
+"mc-3000" 
+Evaluation took:
+  28.869 seconds of real time
+  28.861612 seconds of total run time (28.787623 user, 0.073989 system)
+  [ Run times consist of 0.032 seconds GC time, and 28.830 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  69,285,649,389 processor cycles
+  872,923,536 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  27.094 seconds of real time
+  27.088882 seconds of total run time (27.019893 user, 0.068989 system)
+  [ Run times consist of 0.089 seconds GC time, and 27.0000 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  65,028,418,782 processor cycles
+  869,276,864 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  12.031 seconds of real time
+  12.028172 seconds of total run time (12.017173 user, 0.010999 system)
+  99.98% CPU
+  16 lambdas converted
+  28,874,844,732 processor cycles
+  10,746,272 bytes consed
+  
+Evaluation took:
+  67.997 seconds of real time
+  67.981666 seconds of total run time (67.827689 user, 0.153977 system)
+  [ Run times consist of 0.121 seconds GC time, and 67.861 seconds non-GC time. ]
+  99.98% CPU
+  163,194,817,440 processor cycles
+  1,753,096,400 bytes consed
+
 ## Optimize decide-move-by-random-policy
 
 2015.12.27

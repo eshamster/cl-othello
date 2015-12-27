@@ -78,12 +78,12 @@
 
 (defun mc-simulate (game fn-make-policy times)
   (let ((mc-nodes (init-mc-nodes game))
-        (prob-store (make-prob-store)))
+        (prob-store (make-prob-store))
+        (turn (game-turn game)))
     (if (null mc-nodes) (return-from mc-simulate nil))
     (dotimes (now-times times)
       (let* ((node (select-mc-node-by-ucb mc-nodes now-times))
-             (move (mc-node-move node))
-             (turn (game-turn game)))
+             (move (mc-node-move node)))
         (do-in-move-reverse game move
           (let ((result (mc-simulate-once game fn-make-policy :prob-store prob-store)))
             (cond ((= result turn) (incf (mc-node-sum node)))
