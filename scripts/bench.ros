@@ -6,7 +6,7 @@ exec ros -Q -- $0 "$@"
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (ql:quickload :cl-othello)
   (ql:quickload :cl-othello-test)
-  ;; #+sbcl (sb-profile:profile "CL-OTHELLO.RANDOM-MOVE" "CL-OTHELLO.GAME" "CL-OTHELLO.BOARD" "CL-OTHELLO.DEFINES")
+  ;; #+sbcl (sb-profile:profile "CL-OTHELLO.RANDOM-MOVE" "CL-OTHELLO.MOVE" "CL-OTHELLO.MC" "CL-OTHELLO.GAME" "CL-OTHELLO.BOARD")
   )
 
 (defpackage :ros.script.bench.ros.3660042827
