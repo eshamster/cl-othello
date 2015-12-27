@@ -63,8 +63,7 @@
            ((simple-array fixnum (64)) board))
   (if (not (is-in-board x y))
       (return-from get-piece nil))
-  (let ((pnt (+ (* x +board-size+) y)))
-    (aref board pnt)))
+  (aref board (+ (* x +board-size+) y)))
 
 (defun print-board(board)
   (dotimes (i 3) (princ '\ ))
