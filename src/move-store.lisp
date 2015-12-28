@@ -44,7 +44,7 @@
   (setf (move-store-count store) 0)
   store)
 
-; skip the range check
+;; skip the range check
 (defun add-to-move-store (store x y)
   (set-to-move (aref (move-store-moves store) (move-store-count store)) x y)
   (incf (move-store-count store))
@@ -69,6 +69,7 @@
   (do-move-store (move src)
     (add-to-move-store dst (car move) (cdr move)))
   dst)
+
 (defun clone-move-store (src)
   (let ((dst (init-move-store)))
     (copy-to-move-store dst src)
@@ -119,4 +120,4 @@
   (let ((lst nil))
     (do-move-store (move store)
       (setf lst (cons (funcall fn move) lst)))
-    (reverse lst)))
+    (nreverse lst)))
