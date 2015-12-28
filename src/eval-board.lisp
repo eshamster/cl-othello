@@ -28,13 +28,15 @@
 (setf (gethash :corner *default-eval-param*) 4)
 (setf (gethash :num-move *default-eval-param*) 1)
 
+(defconstant +eval-value-for-win+ 100000)
+
 (defun eval-game-static (game turn &optional (param *default-eval-param*))
   (if (is-game-end game)
       (return-from eval-game-static
         (let ((game-result (get-game-result game)))
-         (cond ((eq game-result turn) 100000)
-               ((eq game-result (reverse-turn turn)) -100000)
-               (t -50000)))))
+         (cond ((eq game-result turn) +eval-value-for-win+)
+               ((eq game-result (reverse-turn turn)) (* +eval-value-for-win+ -1))
+               (t (* +eval-value-for-win+ 0.5))))))
   (let ((board (game-board game)))
     (labels ((eval-corner ()
                (let ((score 0))
