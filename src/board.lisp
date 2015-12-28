@@ -27,7 +27,7 @@
 
 (defun init-board ()
   (let ((board (make-array (* +board-size+ +board-size+)
-					      :element-type 'fixnum)))
+                           :element-type 'fixnum)))
     (set-to-board board 3 4 +white+)
     (set-to-board board 4 4 +black+)
     (set-to-board board 3 3 +black+)
@@ -37,10 +37,8 @@
 (defun is-in-board (x y)
   (declare (optimize (speed 3) (safety 2))
            (fixnum x y))
-  (if (and (not (null x)) (not (null y))
-       (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))
-      t
-      nil))
+  (and (not (null x)) (not (null y))
+       (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+)))
 
 (defun get-next-x (x dir)
   (if (is-right-dir dir) (incf x))
