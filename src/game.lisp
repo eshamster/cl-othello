@@ -111,13 +111,13 @@
 (defun reverse-game (game)
   (if (<= (get-game-depth game) 0) (return-from reverse-game nil))
   (let* ((record (pop-history-record (game-history game)))
-	 (move (history-record-move record)))
+	 (move (history-record-move record))
+         (rev-turn (reverse-turn (history-record-turn record))))
     (set-to-board (game-board game) (car move) (cdr move) +empty+)
     (do-move-store (move (history-record-reverse-list record))
       (let ((x (move-x move))
 	    (y (move-y move)))
-	(set-to-board (game-board game) x y
-		      (reverse-turn (get-piece (game-board game) x y)))))
+	(set-to-board (game-board game) x y rev-turn)))
     (setf (game-turn game) (history-record-turn record))
     game))
 
