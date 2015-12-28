@@ -66,12 +66,12 @@
               (t (decide-according-to-prob store rand-val (+ sum prob) (1+ count)))))))
 
 (defun decide-move-by-random-policy (game fn-make-policy prob-store)
-  (if (is-game-end game) (return-from decide-move-by-random-policy))
-  (let ((move-store (make-moves game)))
-    (funcall fn-make-policy game move-store prob-store)
-    (get-nth-move (decide-according-to-prob prob-store) move-store)))
+  (unless (is-game-end game)
+    (let ((move-store (make-moves game)))
+      (funcall fn-make-policy game move-store prob-store)
+      (get-nth-move (decide-according-to-prob prob-store) move-store))))
 
 (defun move-by-random-policy (game fn-make-policy &key (prob-store (make-prob-store)))
-  (let ((move (decide-move-by-random-policy game fn-make-policy prob-store)))
-    (move-game game move)))
+  (move-game game
+             (decide-move-by-random-policy game fn-make-policy prob-store)))
 
