@@ -87,11 +87,12 @@
          (params (cddr lst))
          (result (construct-player name kind)))
     (labels ((set-params (lst)
-               (if (null lst) (return-from set-params result))
-               (let ((k (car lst))
-                     (v (cadr lst)))
-                 (player-set-param result (alexandria:make-keyword k) v))
-               (set-params (cddr lst))))
+               (if (null lst)
+                   result
+                   (let ((k (car lst))
+                         (v (cadr lst)))
+                     (player-set-param result (alexandria:make-keyword k) v)
+                     (set-params (cddr lst))))))
       (set-params params))))
 
 (defgeneric fit-type-to (right-value target))
@@ -127,18 +128,17 @@
   #'(lambda (game &optional (stream *standard-input*))
       (move-by-human game stream)))
 
-(defun move-by-human(game &optional (stream *standard-input*))
+(defun move-by-human (game &optional (stream *standard-input*))
   (print-game game nil)
   (if (is-game-end game)
       (progn (print "This game has ended")
-             (return-from move-by-human))
+             nil)
       (let ((result))
-        (block read-loop
-          (loop while (not result) do
-               (let ((lst (stream-to-list stream)))
-                 (setf result (eval-play-command game
-                                                 (cons (symbol-name (car lst))
-                                                       (cdr lst)))))))
+        (loop while (null result) do
+             (let ((lst (stream-to-list stream)))
+               (setf result (eval-play-command game
+                                               (cons (symbol-name (car lst))
+                                                     (cdr lst))))))
         result)))
 
 ; --------- minimax --------- ;
@@ -153,11 +153,10 @@
   #'(lambda (game)
       (move-by-minimax game (gethash :depth (player-params target)))))
 
-(defun move-by-minimax(game depth)
-  (if (is-game-end game)
-      (return-from move-by-minimax))
-  (let ((move (select-move-by-minimax game depth #'eval-game-by-ab)))
-    (move-game game move)))
+(defun move-by-minimax (game depth)
+  (unless (is-game-end game) 
+    (move-game game
+               (select-move-by-minimax game depth #'eval-game-by-ab))))
 
 ; --------- random --------- ;
 
@@ -169,10 +168,9 @@
   #'(lambda (game)
       (move-by-uniform-random game)))
 
-(defun move-by-uniform-random(game)
-  (if (is-game-end game)
-      (return-from move-by-uniform-random))
-  (move-by-random-policy game #'make-uniform-policy))
+(defun move-by-uniform-random (game)
+  (unless (is-game-end game) 
+    (move-by-random-policy game #'make-uniform-policy)))
 
 ; --------- mc --------- ;
 
@@ -191,11 +189,10 @@
     #'(lambda (game)
         (move-by-mc game fn ts))))
 
-(defun move-by-mc(game fn-make-policy times)
-  (if (is-game-end game)
-      (return-from move-by-mc))
-  (let ((move (mc-simulate game fn-make-policy times)))
-    (move-game game move)))
+(defun move-by-mc (game fn-make-policy times)
+  (unless (is-game-end game) 
+    (move-game game
+               (mc-simulate game fn-make-policy times))))
 
 ; --------- uct --------- ;
 
@@ -219,8 +216,7 @@
     #'(lambda (game)
         (move-by-uct game par ts))))
 
-(defun move-by-uct(game uct-par times)
-  (if (is-game-end game)
-      (return-from move-by-uct))
-  (let ((move (uct-simulate game uct-par times)))
-    (move-game game move)))
+(defun move-by-uct (game uct-par times)
+  (unless (is-game-end game) 
+    (move-game game
+               (uct-simulate game uct-par times))))
