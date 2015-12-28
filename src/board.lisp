@@ -80,12 +80,12 @@
     (fresh-line)))
 
 (let ((tmp-move (make-a-move 1 1)))
-  (defun count-reverse-to-same(board x y dir turn)
+  (defun count-reverse-to-same (board x y dir turn)
     (let ((fn-replace-by-next (get-fn-to-replace-by-next dir))
 	  (rev-turn (reverse-turn turn))
 	  (now-dist 0))
       (set-to-move tmp-move x y)
-      (loop while t do
+      (loop 
 	   (aif-second-true (funcall fn-replace-by-next tmp-move)
 			    (let ((next-piece (get-piece board (car it) (cdr it))))
 			      (cond ((eq next-piece turn) (return))
