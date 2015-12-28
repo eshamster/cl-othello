@@ -117,8 +117,7 @@
   store)
 
 (defun move-on-board (board x y turn &key (reverse-store (init-move-store)))
-  (if (or (is-invalid-pnt-turn x y turn)
-	  (not (check-move-valid board x y turn)))
+  (if (is-invalid-pnt-turn x y turn)
       (return-from move-on-board nil))
   (set-to-board board x y turn)
   (reset-move-store reverse-store)

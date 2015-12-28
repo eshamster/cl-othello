@@ -10,6 +10,52 @@
 
 # results
 
+## Refactor move-on-board by reducing duplicated check
+
+2015.12.28
+
+- 68.0 sec -> 66.0 sec
+- 1.75 GB  -> 1.75 GB
+
+"mc-3000" 
+Evaluation took:
+  27.810 seconds of real time
+  27.804773 seconds of total run time (27.717786 user, 0.086987 system)
+  [ Run times consist of 0.033 seconds GC time, and 27.772 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  66,747,264,363 processor cycles
+  872,923,744 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  26.584 seconds of real time
+  26.576960 seconds of total run time (26.485974 user, 0.090986 system)
+  [ Run times consist of 0.090 seconds GC time, and 26.487 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  63,801,968,157 processor cycles
+  869,276,704 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  11.581 seconds of real time
+  11.579239 seconds of total run time (11.568241 user, 0.010998 system)
+  99.98% CPU
+  16 lambdas converted
+  27,795,820,341 processor cycles
+  10,746,208 bytes consed
+  
+Evaluation took:
+  65.978 seconds of real time
+  65.962972 seconds of total run time (65.774001 user, 0.188971 system)
+  [ Run times consist of 0.123 seconds GC time, and 65.840 seconds non-GC time. ]
+  99.98% CPU
+  158,350,171,458 processor cycles
+  1,753,096,592 bytes consed
+
 ## Refactor mc-simulate slightly
 
 2015.12.27 (Maybe this improvement is within the error range)
