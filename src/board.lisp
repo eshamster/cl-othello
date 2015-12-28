@@ -37,8 +37,8 @@
 (defun is-in-board (x y)
   (declare (optimize (speed 3) (safety 2))
            (fixnum x y))
-  (and (not (null x)) (not (null y))
-       (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+)))
+  (and (>= x 0) (< x +board-size+)
+       (>= y 0) (< y +board-size+)))
 
 (defun get-next-x (x dir)
   (if (is-right-dir dir) (incf x))
