@@ -14,7 +14,7 @@
     (return-from exec-move-com nil))
   (let ((x (car args))
 	(y (cadr args)))
-    (when (not (and (numberp x) (numberp y)))
+    (unless (and (numberp x) (numberp y))
       (princ "The Move command requires 2 numbers as args")
       (return-from exec-move-com nil))
     (move-game game x y)))
