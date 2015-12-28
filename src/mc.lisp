@@ -31,16 +31,14 @@
 (defun sim-to-game-end (game fn-make-policy prob-store)
   (if (is-game-end game)
       game
-      (progn (move-by-random-policy game fn-make-policy :prob-store prob-store)
-             (sim-to-game-end game fn-make-policy prob-store))))
+      (sim-to-game-end (move-by-random-policy game fn-make-policy :prob-store prob-store)
+                       fn-make-policy prob-store)))
   
-; This can be implemented using do-in-move-reverse macro,
-; but I'm afraid that the implementation doesn't be a tail call
 (defun mc-simulate-once (game fn-make-policy &key (prob-store (make-prob-store)))
-  (let ((depth (get-game-depth game)))
-      (let ((result (get-game-result (sim-to-game-end game fn-make-policy prob-store))))
-        (reverse-game-to-depth game depth)
-        result)))
+  (let ((depth (get-game-depth game))
+        (result (get-game-result (sim-to-game-end game fn-make-policy prob-store))))
+    (reverse-game-to-depth game depth)
+    result))
 
 ; use UCB
 (defstruct mc-node
@@ -80,13 +78,13 @@
   (let ((mc-nodes (init-mc-nodes game))
         (prob-store (make-prob-store))
         (turn (game-turn game)))
-    (if (null mc-nodes) (return-from mc-simulate nil))
-    (dotimes (now-times times)
-      (let* ((node (select-mc-node-by-ucb mc-nodes now-times))
-             (move (mc-node-move node)))
-        (do-in-move-reverse game move
-          (let ((result (mc-simulate-once game fn-make-policy :prob-store prob-store)))
-            (cond ((= result turn) (incf (mc-node-sum node)))
-                  ((= result (reverse-turn turn)) (decf (mc-node-sum node)))))
-          (incf (mc-node-num node)))))
-    (mc-node-move (select-mc-node-by-ave mc-nodes))))
+    (when mc-nodes
+      (dotimes (now-times times)
+        (let* ((node (select-mc-node-by-ucb mc-nodes now-times))
+               (move (mc-node-move node)))
+          (do-in-move-reverse game move
+            (let ((result (mc-simulate-once game fn-make-policy :prob-store prob-store)))
+              (cond ((= result turn) (incf (mc-node-sum node)))
+                    ((= result (reverse-turn turn)) (decf (mc-node-sum node)))))
+            (incf (mc-node-num node)))))
+      (mc-node-move (select-mc-node-by-ave mc-nodes)))))
