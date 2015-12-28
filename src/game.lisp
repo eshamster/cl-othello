@@ -84,20 +84,16 @@
 	    0))))
 
 (defun move-game-by-xy (game x y)
-  (let ((board (game-board game))
-	(turn (game-turn game)))
-    (unless (check-move-valid board x y turn)
-      (return-from move-game-by-xy nil))
+  (let ((turn (game-turn game)))
     (push-history-record
      (game-history game)
      #'(lambda (record)
-	 (block exit
-	   (unless (move-on-board (game-board game) x y turn
-				  :reverse-store (history-record-reverse-list record))
-	     (return-from exit nil))
-	   (set-to-move (history-record-move record) x y)
-	   (setf (history-record-turn record) turn)
-	   t)))
+         (unless (move-on-board (game-board game) x y turn
+                                :reverse-store (history-record-reverse-list record))
+           (return-from move-game-by-xy nil))
+         (set-to-move (history-record-move record) x y)
+         (setf (history-record-turn record) turn)
+         t))
     (setf (game-turn game) (judge-next-turn game))
     game))
 

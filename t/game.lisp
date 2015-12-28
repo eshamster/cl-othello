@@ -23,7 +23,9 @@
     "Test move-game"
   (let ((game (init-game)))
     (ok (not (move-game game -1 3)))
+    (is (get-game-depth game) 0)
     (ok (not (move-game game 5 5)))
+    (is (get-game-depth game) 0)
     (let* ((game (make-nth-test-game 2))
            (depth (get-game-depth game)))
       (assert (move-game game 4 5))
