@@ -53,35 +53,34 @@
   move-store
   history)
 
-(defun init-game()
+(defun init-game ()
   (let ((a-game (make-game :board (init-board)
 			   :turn 1
 			   :move-store (init-move-store)
 			   :history (init-history-record-store))))
     a-game))
 
-(defun is-game-end(game)
-  (labels ((neq (x y) (not (eq x y))))
-    (let ((turn (game-turn game)))
-      (and (neq turn +white+) (neq turn +black+)))))
+(defun is-game-end (game)
+  (let ((turn (game-turn game)))
+    (not (or (eq turn +white+)
+             (eq turn +black+)))))
 
-; TODO: compare by hash value
-(defun is-game-same-phase(game1 game2)
-  (and
-   (eq (game-turn game1) (game-turn game2))
-   (equalp (game-board game1) (game-board game2))))
+;; TODO: compare by hash value
+(defun is-game-same-phase (game1 game2)
+  (and (eq (game-turn game1) (game-turn game2))
+       (equalp (game-board game1) (game-board game2))))
 
 (defun judge-next-turn (moved-game)
   (let* ((board (game-board moved-game))
 	 (turn (game-turn moved-game))
 	 (rev-turn (reverse-turn turn)))
-    (if (< 0 (move-store-count (make-moves-on-board board rev-turn
-                                                    :store (game-move-store moved-game))))
-	rev-turn
-	(if (< 0 (move-store-count (make-moves-on-board board turn
-                                                        :store (game-move-store moved-game))))
-	    turn
-	    0))))
+    (cond ((< 0 (move-store-count (make-moves-on-board board rev-turn
+                                                       :store (game-move-store moved-game))))
+           rev-turn)
+          ((< 0 (move-store-count (make-moves-on-board board turn
+                                                       :store (game-move-store moved-game))))
+           turn)
+          (t +empty+))))
 
 (defun move-game-by-xy (game x y)
   (let ((turn (game-turn game)))
@@ -97,7 +96,6 @@
     (setf (game-turn game) (judge-next-turn game))
     game))
 
-;; TODO: add test
 (defmacro move-game (game &rest rest)
   (case (length rest)
     (1 (if (atom (car rest))
@@ -113,19 +111,16 @@
   (let* ((record (pop-history-record (game-history game)))
 	 (move (history-record-move record))
          (rev-turn (reverse-turn (history-record-turn record))))
-    (set-to-board (game-board game) (car move) (cdr move) +empty+)
+    (set-to-board (game-board game) (move-x move) (move-y move) +empty+)
     (do-move-store (move (history-record-reverse-list record))
-      (let ((x (move-x move))
-	    (y (move-y move)))
-	(set-to-board (game-board game) x y rev-turn)))
+      (set-to-board (game-board game) (move-x move) (move-y move) rev-turn))
     (setf (game-turn game) (history-record-turn record))
     game))
 
 (defun reverse-game-to-depth (game depth)
   (if (<= (get-game-depth game) (max 0 depth))
-      (return-from reverse-game-to-depth game))
-  (reverse-game game)
-  (reverse-game-to-depth game depth))
+      game 
+      (reverse-game-to-depth (reverse-game game) depth)))
 
 (defun get-game-depth (game)
   (history-record-store-count (game-history game)))
@@ -166,20 +161,20 @@
   (do-move-store (move (make-moves game))
     (format t "~A " move))
   (format t "~%")
-  (if prints-history
-      (labels ((print-a-history (history)
-		 (let ((lst nil))
-		   (do-move-store (move (history-record-reverse-list history))
-		     (setf lst (cons move lst)))
-		   (format t "TURN: ~2D, Move: ~A, REVERSE-LIST: ~D~%"
-			   (history-record-turn history)
-			   (history-record-move history)
-			   lst))))
-	(fresh-line)
-	(princ "+++++ history start +++++")
-	(fresh-line)
-	(do-history-record-store (record (game-history game))
-	  (print-a-history record))
-	(princ "+++++ history end +++++")))
+  (when prints-history
+    (labels ((print-a-history (history)
+               (let ((lst nil))
+                 (do-move-store (move (history-record-reverse-list history))
+                   (setf lst (cons move lst)))
+                 (format t "TURN: ~2D, Move: ~A, REVERSE-LIST: ~D~%"
+                         (history-record-turn history)
+                         (history-record-move history)
+                         lst))))
+      (fresh-line)
+      (princ "+++++ history start +++++")
+      (fresh-line)
+      (do-history-record-store (record (game-history game))
+        (print-a-history record))
+      (princ "+++++ history end +++++")))
   (fresh-line))
  
