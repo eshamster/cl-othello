@@ -61,5 +61,10 @@
   (set-fn +dir-right-up+    1 -1)
   (set-fn +dir-right-down+  1  1))
 
+(declaim (inline get-fn-to-replace-by-next))
+
 (defun get-fn-to-replace-by-next (dir)
+  (declare (optimize (speed 3) (safety 2))
+           (fixnum dir)
+           ((simple-array function (8)) fns-replace-by-next))
   (aref fns-replace-by-next dir))

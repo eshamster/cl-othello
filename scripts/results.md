@@ -10,6 +10,52 @@
 
 # results
 
+## Optimize and inline get-fn-to-replace-by-next
+
+2015.12.28
+
+- 66.0 sec -> 61.8 sec
+- 1.75 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  26.160 seconds of real time
+  26.154024 seconds of total run time (26.081035 user, 0.072989 system)
+  [ Run times consist of 0.036 seconds GC time, and 26.119 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  62,784,946,188 processor cycles
+  893,350,400 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  25.124 seconds of real time
+  25.119181 seconds of total run time (25.022196 user, 0.096985 system)
+  [ Run times consist of 0.092 seconds GC time, and 25.028 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  60,298,656,783 processor cycles
+  889,689,056 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  10.507 seconds of real time
+  10.504403 seconds of total run time (10.491405 user, 0.012998 system)
+  99.97% CPU
+  16 lambdas converted
+  25,217,194,353 processor cycles
+  17,173,360 bytes consed
+  
+Evaluation took:
+  61.793 seconds of real time
+  61.779608 seconds of total run time (61.596636 user, 0.182972 system)
+  [ Run times consist of 0.128 seconds GC time, and 61.652 seconds non-GC time. ]
+  99.98% CPU
+  148,306,196,880 processor cycles
+  1,800,363,120 bytes consed
+
 ## Refactor move-on-board by reducing duplicated check
 
 2015.12.28
