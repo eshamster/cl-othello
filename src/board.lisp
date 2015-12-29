@@ -51,8 +51,10 @@
 
 (defun set-to-board (board x y piece)
   (let ((pnt (+ (* x +board-size+) y)))
-	(setf (aref board pnt) piece))
+    (setf (aref board pnt) piece))
   board)
+
+(declaim (inline get-piece))
 
 ;; Note: If change +board-size+, the expected array size needs to be rewritten
 (defun get-piece (board x y)
@@ -90,19 +92,14 @@
 				    (t (return-from count-reverse-to-same 0))))
 			    (return-from count-reverse-to-same 0)))
       now-dist)))
-
-(defun is-invalid-pnt-turn (x y turn)
-  (or (is-empty turn)
-      (not (is-in-board x y))))
 	  
 (defun check-move-valid (board x y turn)
-  (if (or (is-invalid-pnt-turn x y turn)
-	  (not (is-empty (get-piece board x y))))
-      (return-from check-move-valid nil))
-  (dotimes (dir 8)
-    (when (< 0 (count-reverse-to-same board x y dir turn))
-      (return-from check-move-valid t)))
-  nil)
+  (when (and (not (is-empty turn))
+             (is-empty (get-piece board x y))) 
+    (dotimes (dir 8)
+      (when (< 0 (count-reverse-to-same board x y dir turn))
+        (return-from check-move-valid t)))
+    nil))
 
 (defun make-moves-on-board (board turn &key (store (init-move-store)))
   (reset-move-store store)
@@ -111,6 +108,10 @@
       (when (check-move-valid board x y turn)
         (add-to-move-store store x y))))
   store)
+
+(defun is-invalid-pnt-turn (x y turn)
+  (or (is-empty turn)
+      (not (is-in-board x y))))
 
 (defun move-on-board (board x y turn &key (reverse-store (init-move-store)))
   (when (is-invalid-pnt-turn x y turn)

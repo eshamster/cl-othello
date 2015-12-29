@@ -10,6 +10,190 @@
 
 # results
 
+## Refactor game:make-moves by using cached move-store
+
+2015.12.29
+
+- 51.2 sec -> 31.8 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  13.897 seconds of real time
+  13.893888 seconds of total run time (13.826898 user, 0.066990 system)
+  [ Run times consist of 0.036 seconds GC time, and 13.858 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  33,353,777,583 processor cycles
+  893,372,896 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  13.436 seconds of real time
+  13.434958 seconds of total run time (13.372967 user, 0.061991 system)
+  [ Run times consist of 0.089 seconds GC time, and 13.346 seconds non-GC time. ]
+  99.99% CPU
+  16 lambdas converted
+  32,248,329,252 processor cycles
+  886,712,000 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  4.487 seconds of real time
+  4.485317 seconds of total run time (4.484318 user, 0.000999 system)
+  99.96% CPU
+  16 lambdas converted
+  10,767,922,845 processor cycles
+  17,175,920 bytes consed
+  
+Evaluation took:
+  31.823 seconds of real time
+  31.817163 seconds of total run time (31.687183 user, 0.129980 system)
+  [ Run times consist of 0.125 seconds GC time, and 31.693 seconds non-GC time. ]
+  99.98% CPU
+  76,375,742,937 processor cycles
+  1,797,443,760 bytes consed
+
+## Refactor check-move-valid by removing duplicated check
+
+2015.12.29
+
+- 54.2 sec -> 51.2 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  21.109 seconds of real time
+  21.102792 seconds of total run time (21.036802 user, 0.065990 system)
+  [ Run times consist of 0.035 seconds GC time, and 21.068 seconds non-GC time. ]
+  99.97% CPU
+  72 lambdas converted
+  50,661,112,902 processor cycles
+  893,348,816 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  21.229 seconds of real time
+  21.222773 seconds of total run time (21.123788 user, 0.098985 system)
+  [ Run times consist of 0.093 seconds GC time, and 21.130 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  50,949,457,614 processor cycles
+  886,711,392 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  8.855 seconds of real time
+  8.853654 seconds of total run time (8.844656 user, 0.008998 system)
+  99.99% CPU
+  16 lambdas converted
+  21,253,087,248 processor cycles
+  17,176,432 bytes consed
+  
+Evaluation took:
+  51.195 seconds of real time
+  51.181219 seconds of total run time (51.006246 user, 0.174973 system)
+  [ Run times consist of 0.128 seconds GC time, and 51.054 seconds non-GC time. ]
+  99.97% CPU
+  122,868,415,113 processor cycles
+  1,797,386,960 bytes consed
+
+## Inline board:get-piece
+
+2015.12.29
+
+- 56.9 sec -> 54.2 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  23.506 seconds of real time
+  23.497428 seconds of total run time (23.434438 user, 0.062990 system)
+  [ Run times consist of 0.032 seconds GC time, and 23.466 seconds non-GC time. ]
+  99.96% CPU
+  72 lambdas converted
+  56,414,392,350 processor cycles
+  893,353,296 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  21.929 seconds of real time
+  21.922668 seconds of total run time (21.843680 user, 0.078988 system)
+  [ Run times consist of 0.100 seconds GC time, and 21.823 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  52,628,433,546 processor cycles
+  886,713,136 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  8.757 seconds of real time
+  8.754668 seconds of total run time (8.749669 user, 0.004999 system)
+  99.98% CPU
+  16 lambdas converted
+  21,017,332,956 processor cycles
+  17,176,048 bytes consed
+  
+Evaluation took:
+  54.193 seconds of real time
+  54.177763 seconds of total run time (54.030786 user, 0.146977 system)
+  [ Run times consist of 0.132 seconds GC time, and 54.046 seconds non-GC time. ]
+  99.97% CPU
+  130,065,405,126 processor cycles
+  1,797,392,800 bytes consed
+
+## Inline some functions in defines.lisp
+
+2015.12.29
+
+- 61.8 sec -> 56.9 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  24.379 seconds of real time
+  24.375294 seconds of total run time (24.310304 user, 0.064990 system)
+  [ Run times consist of 0.034 seconds GC time, and 24.342 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  58,512,736,404 processor cycles
+  893,350,656 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  22.974 seconds of real time
+  22.968508 seconds of total run time (22.882521 user, 0.085987 system)
+  [ Run times consist of 0.089 seconds GC time, and 22.880 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  55,137,489,060 processor cycles
+  886,711,344 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  9.581 seconds of real time
+  9.578544 seconds of total run time (9.578544 user, 0.000000 system)
+  99.98% CPU
+  16 lambdas converted
+  22,996,720,167 processor cycles
+  17,176,096 bytes consed
+  
+Evaluation took:
+  56.937 seconds of real time
+  56.925346 seconds of total run time (56.774369 user, 0.150977 system)
+  [ Run times consist of 0.123 seconds GC time, and 56.803 seconds non-GC time. ]
+  99.98% CPU
+  136,652,597,145 processor cycles
+  1,797,388,416 bytes consed
+
 ## Optimize and inline get-fn-to-replace-by-next
 
 2015.12.28
