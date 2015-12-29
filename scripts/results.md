@@ -10,6 +10,52 @@
 
 # results
 
+## Refactor game:make-moves by using cached move-store
+
+2015.12.29
+
+- 51.2 sec -> 31.8 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  13.897 seconds of real time
+  13.893888 seconds of total run time (13.826898 user, 0.066990 system)
+  [ Run times consist of 0.036 seconds GC time, and 13.858 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  33,353,777,583 processor cycles
+  893,372,896 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  13.436 seconds of real time
+  13.434958 seconds of total run time (13.372967 user, 0.061991 system)
+  [ Run times consist of 0.089 seconds GC time, and 13.346 seconds non-GC time. ]
+  99.99% CPU
+  16 lambdas converted
+  32,248,329,252 processor cycles
+  886,712,000 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  4.487 seconds of real time
+  4.485317 seconds of total run time (4.484318 user, 0.000999 system)
+  99.96% CPU
+  16 lambdas converted
+  10,767,922,845 processor cycles
+  17,175,920 bytes consed
+  
+Evaluation took:
+  31.823 seconds of real time
+  31.817163 seconds of total run time (31.687183 user, 0.129980 system)
+  [ Run times consist of 0.125 seconds GC time, and 31.693 seconds non-GC time. ]
+  99.98% CPU
+  76,375,742,937 processor cycles
+  1,797,443,760 bytes consed
+
 ## Refactor check-move-valid by removing duplicated check
 
 2015.12.29

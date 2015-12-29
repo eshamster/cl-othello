@@ -51,6 +51,7 @@
   board
   turn
   move-store
+  (depth-updated-move-store -1)
   history)
 
 (defun init-game ()
@@ -70,15 +71,18 @@
   (and (eq (game-turn game1) (game-turn game2))
        (equalp (game-board game1) (game-board game2))))
 
+(defun update-move-store (game &optional (target-turn (game-turn game)))
+  (setf (game-depth-updated-move-store game) (get-game-depth game))
+  (make-moves-on-board (game-board game)
+                       target-turn
+                       :store (game-move-store game)))
+
 (defun judge-next-turn (moved-game)
-  (let* ((board (game-board moved-game))
-	 (turn (game-turn moved-game))
+  (let* ((turn (game-turn moved-game))
 	 (rev-turn (reverse-turn turn)))
-    (cond ((< 0 (move-store-count (make-moves-on-board board rev-turn
-                                                       :store (game-move-store moved-game))))
+    (cond ((< 0 (move-store-count (update-move-store moved-game rev-turn)))
            rev-turn)
-          ((< 0 (move-store-count (make-moves-on-board board turn
-                                                       :store (game-move-store moved-game))))
+          ((< 0 (move-store-count (update-move-store moved-game turn)))
            turn)
           (t +empty+))))
 
@@ -126,7 +130,10 @@
   (history-record-store-count (game-history game)))
 
 (defun make-moves (game)
-  (make-moves-on-board (game-board game) (game-turn game) :store (game-move-store game)))
+  (if (= (get-game-depth game)
+         (game-depth-updated-move-store game))
+      (game-move-store game)
+      (update-move-store game)))
 
 (defmacro do-in-move-reverse (game move &body body)
   (let ((result (gensym))
