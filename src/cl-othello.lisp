@@ -22,14 +22,13 @@
                 :player-make-mover
                 :construct-player
                 :find-player-by-name
-                :player-set-param))
+                :player-set-param)
+  (:import-from :alexandria
+                :make-keyword))
   
 (in-package :cl-othello)
 
 (defparameter *player-file* "PLAYER_INFO")
-
-(defun symbol-to-keyword (sym)
-  (intern (symbol-name sym) "KEYWORD"))
 
 (defun main (&key (plyr-file *player-file*) (in *standard-input*))
   (let ((game (init-game))
@@ -37,19 +36,19 @@
         (input-list nil)
         (com-name nil)
         (arg-list nil))
-    (loop until (eq (symbol-to-keyword com-name) :quit) do
+    (loop until (eq (make-keyword com-name) :quit) do
          (princ "> " )
          (setf input-list (stream-to-list in))
          (setf com-name (car input-list))
          (setf arg-list (cdr input-list))
-         (case (symbol-to-keyword com-name)
+         (case (make-keyword com-name)
            ((:help :nil) (com-help))
            (:show (print-game game))
            (:init (setf game (init-game))
-                 (print-game game))
+                  (print-game game))
            (:start (com-start-game game arg-list plyr-list))
            (:player (setf plyr-list (com-player arg-list plyr-list in))
-                   (com-save-player plyr-file plyr-list))
+                    (com-save-player plyr-file plyr-list))
            (:quit)
            (t (format t "The command \"~D\" is not defined~%" com-name))))))
 
@@ -72,14 +71,12 @@
     (values (game-loop game mover1 mover2) t)))
 
 (defun make-mover-by-name-sym (plyr-list name-sym)
-  (when (null name-sym)
-    (return-from make-mover-by-name-sym nil))
-  (let ((plyr (find-if #'(lambda (target) (equalp (player-name target)
+  (when name-sym 
+    (let ((plyr (find-if (lambda (target) (equalp (player-name target)
                                                   (symbol-name name-sym)))
-                       plyr-list)))
-    (when (null plyr)
-      (return-from make-mover-by-name-sym nil))
-    (player-make-mover plyr)))
+                         plyr-list)))
+      (when plyr
+        (player-make-mover plyr)))))
 
 (defun game-loop (game white-mover black-mover)
   (loop until (is-game-end game) do
@@ -90,18 +87,19 @@
 
 ;-----commands about player -----;
 
-; TODO: change the interface of adding player (to receive a player's name)
+;; TODO: change the interface of adding player (to receive a player's name)
 (defun com-player (com-list plyr-list &optional (stream *standard-input*))
   (let ((valid-com t)
-        (com-keyword (symbol-to-keyword (car com-list))))
+        (com-keyword (make-keyword (car com-list))))
     (case com-keyword
       ((:nil :help) (com-player-help))
       (:show (com-show-player plyr-list))
       (:remove (multiple-value-bind (lst suc) (com-remove-player (symbol-name (cadr com-list)) plyr-list)
-              (if suc
-                  (progn (setf plyr-list lst))
-                  (format t "The name \"~D\" is not exist~%" (cadr com-list)))))
-      (:add (setf plyr-list (com-add-player (com-init-player) plyr-list stream)))
+                 (if suc
+                     (setf plyr-list lst)
+                     (format t "The name \"~D\" is not exist~%" (cadr com-list)))))
+      (:add (setf plyr-list
+                  (com-add-player (com-init-player) plyr-list stream)))
       (t (format t "The command \"~D\" is not defined" com-keyword)
          (setf valid-com nil)))
     (values plyr-list valid-com)))
@@ -115,13 +113,12 @@
     (princ-line "add")))
 
 (defun com-load-player (file-name)
-  (if (not (probe-file file-name))
-      (return-from com-load-player nil))
-  (with-open-file (in file-name :direction :input)
-    (let (str result)
-      (loop while (setf str (read-line in nil)) do
-           (setf result (cons (player-deserialize str) result)))
-      result)))
+  (when (probe-file file-name) 
+    (with-open-file (in file-name :direction :input)
+      (let (str result)
+        (loop while (setf str (read-line in nil)) do
+             (setf result (cons (player-deserialize str) result)))
+        result))))
 
 (defun com-save-player (file-name player-list)
   (with-open-file (out file-name
@@ -135,8 +132,8 @@
 (defun com-show-player (player-list &optional (stream *standard-output*))
   (dolist (plyr player-list)
     (format stream "~A (~A) -> " (player-name plyr) (player-kind plyr))
-    (maphash #'(lambda (k v)
-                 (format stream "~A = ~A, " k (to-string v)))
+    (maphash (lambda (k v)
+               (format stream "~A = ~A, " k (to-string v)))
              (player-params plyr))
     (fresh-line stream)))
 
@@ -151,43 +148,45 @@
     (values (remove found player-list) t)))
 
 (defun com-add-player (plyr plyr-list &optional (stream *standard-input*))
-  (if (null plyr)
-      (return-from com-add-player plyr-list))
-  (when (find-player-by-name (player-name plyr) plyr-list)
-    (unless (equalp
-             (read-line-while "The name is already exist. Do you overwrite it? [y/n]"
-                              #'(lambda (str) (not (or (equalp str "y")
-                                                       (equalp str "n"))))
-                              stream)
-             "y")
-      (return-from com-add-player plyr-list)))
-  (com-modify-player plyr stream)
-  (push-without-dup plyr plyr-list #'(lambda (a b) (equalp (player-name a) (player-name b)))))
+  (labels ((avoids-overwrite ()
+             (and (find-player-by-name (player-name plyr) plyr-list)
+                  (equalp
+                   (read-line-while "The name is already exist. Do you overwrite it? [y/n]"
+                                    (lambda (str) (not (or (equalp str "y")
+                                                           (equalp str "n"))))
+                                    stream)
+                   "n"))))
+    (unless (or (null plyr)
+                (avoids-overwrite)) 
+      (com-modify-player plyr stream)
+      (setf plyr-list (push-without-dup plyr plyr-list
+                                        (lambda (a b) (equalp (player-name a) (player-name b)))))))
+  plyr-list)
 
 (defun com-init-player (&optional (stream *standard-input*))
   (let* ((name (read-line-while "name"
-                                #'(lambda (str)
-                                    (equalp str ""))
+                                (lambda (str)
+                                  (equalp str ""))
                                 stream))
          (plyr nil))
     (read-line-while "kind [human, random, mc, uct]"
-                     #'(lambda (str)
-                         (setf plyr (construct-player name (intern (string-upcase str))))
-                         (null plyr))
+                     (lambda (str)
+                       (setf plyr (construct-player name (intern (string-upcase str))))
+                       (null plyr))
                      stream)
     plyr))
 
 (defun com-modify-player (plyr &optional (stream *standard-input*))
-  (maphash #'(lambda (k v)
-               (read-line-while
-                (format nil "~D (default=~D)" k (to-string v))
-                #'(lambda (str)
-                    (not (or (equalp str "")
-                             (handler-case
-                                 (player-set-param plyr k
-                                                   (read-from-string str))
-                               (simple-error (e) (declare (ignore e)) nil)))))
-                stream))
+  (maphash (lambda (k v)
+             (read-line-while
+              (format nil "~D (default=~D)" k (to-string v))
+              (lambda (str)
+                (not (or (equalp str "")
+                         (handler-case
+                             (player-set-param plyr k
+                                               (read-from-string str))
+                           (simple-error (e) (declare (ignore e)) nil)))))
+              stream))
            (player-params plyr))
   plyr)
 
