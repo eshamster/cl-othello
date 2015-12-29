@@ -38,6 +38,8 @@
 (defconstant +dir-left+		6)
 (defconstant +dir-left-up+ 	7)
 
+(declaim (inline is-empty is-reverse reverse-turn))
+
 (defun is-empty (piece)
   (not (or (eq piece +white+) (eq piece +black+))))
 (defun is-reverse (turn target)

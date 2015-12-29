@@ -10,6 +10,52 @@
 
 # results
 
+## Inline some functions in defines.lisp
+
+2015.12.29
+
+- 61.8 sec -> 56.9 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  24.379 seconds of real time
+  24.375294 seconds of total run time (24.310304 user, 0.064990 system)
+  [ Run times consist of 0.034 seconds GC time, and 24.342 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  58,512,736,404 processor cycles
+  893,350,656 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  22.974 seconds of real time
+  22.968508 seconds of total run time (22.882521 user, 0.085987 system)
+  [ Run times consist of 0.089 seconds GC time, and 22.880 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  55,137,489,060 processor cycles
+  886,711,344 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  9.581 seconds of real time
+  9.578544 seconds of total run time (9.578544 user, 0.000000 system)
+  99.98% CPU
+  16 lambdas converted
+  22,996,720,167 processor cycles
+  17,176,096 bytes consed
+  
+Evaluation took:
+  56.937 seconds of real time
+  56.925346 seconds of total run time (56.774369 user, 0.150977 system)
+  [ Run times consist of 0.123 seconds GC time, and 56.803 seconds non-GC time. ]
+  99.98% CPU
+  136,652,597,145 processor cycles
+  1,797,388,416 bytes consed
+
 ## Optimize and inline get-fn-to-replace-by-next
 
 2015.12.28
