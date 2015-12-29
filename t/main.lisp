@@ -1,12 +1,12 @@
 (in-package :cl-user)
-(defpackage cl-othello-test
+(defpackage cl-othello-test.main
   (:use :cl
-        :cl-othello
+        :cl-othello.main
         :cl-othello.game
         :cl-othello.player
         :cl-othello-test.test-utils
         :prove))
-(in-package :cl-othello-test)
+(in-package :cl-othello-test.main)
 
 (defun game-p (obj)
   (cl-othello.game::game-p obj))

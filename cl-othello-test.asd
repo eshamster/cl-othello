@@ -32,7 +32,7 @@
                  (:test-file "uct")
                  (:test-file "human")
                  (:test-file "player")
-                 (:test-file "cl-othello"))))
+                 (:test-file "main"))))
   :description "Test system for cl-othello"
 
   :defsystem-depends-on (:prove-asdf)

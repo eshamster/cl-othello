@@ -37,6 +37,7 @@
                  (:file "uct")
                  (:file "human")
                  (:file "player")
+                 (:file "main")
                  (:file "cl-othello"))))
   :description ""
   :long-description
