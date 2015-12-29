@@ -98,7 +98,7 @@
       (not (is-in-board x y))))
 	  
 (defun check-move-valid (board x y turn)
-  (if (or (is-invalid-pnt-turn x y turn)
+  (if (or (is-empty turn)
 	  (not (is-empty (get-piece board x y))))
       (return-from check-move-valid nil))
   (dotimes (dir 8)

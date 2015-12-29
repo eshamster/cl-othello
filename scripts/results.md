@@ -10,6 +10,52 @@
 
 # results
 
+## Refactor check-move-valid by removing duplicated check
+
+2015.12.29
+
+- 54.2 sec -> 51.2 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  21.109 seconds of real time
+  21.102792 seconds of total run time (21.036802 user, 0.065990 system)
+  [ Run times consist of 0.035 seconds GC time, and 21.068 seconds non-GC time. ]
+  99.97% CPU
+  72 lambdas converted
+  50,661,112,902 processor cycles
+  893,348,816 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  21.229 seconds of real time
+  21.222773 seconds of total run time (21.123788 user, 0.098985 system)
+  [ Run times consist of 0.093 seconds GC time, and 21.130 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  50,949,457,614 processor cycles
+  886,711,392 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  8.855 seconds of real time
+  8.853654 seconds of total run time (8.844656 user, 0.008998 system)
+  99.99% CPU
+  16 lambdas converted
+  21,253,087,248 processor cycles
+  17,176,432 bytes consed
+  
+Evaluation took:
+  51.195 seconds of real time
+  51.181219 seconds of total run time (51.006246 user, 0.174973 system)
+  [ Run times consist of 0.128 seconds GC time, and 51.054 seconds non-GC time. ]
+  99.97% CPU
+  122,868,415,113 processor cycles
+  1,797,386,960 bytes consed
+
 ## Inline board:get-piece
 
 2015.12.29
