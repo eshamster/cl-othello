@@ -22,26 +22,24 @@
                  (setf lst (cons prob lst)))
                (setf lst (reverse lst))
                (is lst expected :test #'equalp))))
-    (test 2 '(1/4 1/4 1/4 1/4))
-    (test 5 '(1/7 1/7 1/7 1/7 1/7 1/7 1/7))
+    (test 2 '(0.25 0.25 0.25 0.25))
     (test 100 nil)))
 
 (subtest
-    "Test decide-move-by-random"
-  (let* ((game (make-nth-test-game 2))
-         (moves (make-moves game))
-         (prob-store (make-prob-store)))
+    "Test decide-according-to-prob"
+  (let ((store (make-prob-store)))
+    (dotimes (i 4)
+      ($:add-to-prob-store store 0.25))
     (labels ((test-decision (rand-val answer-idx)
-               (is ($:decide-move-by-random-policy game #'make-uniform-policy
-                                                   rand-val prob-store)
-                         (get-nth-move answer-idx moves))))
-      (test-decision -2 0)
-      (test-decision 0 0)
+               (is ($:decide-according-to-prob store rand-val)
+                   answer-idx)))
+      (test-decision -2.0 0)
+      (test-decision 0.0 0)
       (test-decision 0.1 0)
       (test-decision 0.25 0)
       (test-decision 0.26 1)
-      (test-decision 1 3)
-      (test-decision 2 3))))
+      (test-decision 1.0 3)
+      (test-decision 2.0 3))))
 
 (subtest
     "Test move-by-random-policy"
@@ -60,11 +58,11 @@
     (subtest
         "Test add ,reset and loop"
       (is-type ($:add-to-prob-store store 0.1) 'prob-store)
-      (is-type ($:add-to-prob-store store 1/7) 'prob-store)
+      (is-type ($:add-to-prob-store store 0.3) 'prob-store)
       (let ((lst nil))
         ($:do-prob-store (prob store)
           (setf lst (cons prob lst)))
-        (is lst '(1/7 0.1) :test #'equalp))
+        (is lst '(0.3 0.1) :test #'equalp))
       
       (is-type ($:reset-prob-store store) 'prob-store)
       (is ($:prob-store-count store) 0))
@@ -73,9 +71,9 @@
         "Test get-nth-prob"
       ($:reset-prob-store store)
       ($:add-to-prob-store store 0.5)
-      (ok (not ($:get-nth-prob nil store)))
-      (ok (not ($:get-nth-prob -1 store)))
-      (ok (not ($:get-nth-prob 1 store)))
+      ($:add-to-prob-store store 0.5)
+      (is-error ($:get-nth-prob -1 store) 'simple-error)
+      (is-error ($:get-nth-prob 2 store) 'simple-error)
       (is ($:get-nth-prob 0 store) 0.5))))
 
 (finalize)

@@ -8,7 +8,10 @@
            :push-without-dup
            :read-line-while
            :aif-second-true
-           :it))
+           :make-list-of-same-value
+           :it)
+  (:import-from :alexandria
+                :with-gensyms))
 (in-package :cl-othello.utils)
 
 (defun string-to-list (line)
@@ -76,3 +79,11 @@
   (let ((second (gensym)))
     `(multiple-value-bind (it ,second) ,test
        (if ,second ,if-ex ,else-ex))))
+
+(defmacro make-list-of-same-value (length value)
+  "Make a list by repeating 'value' in the 'length' times. The 'value' is intentionally evaluated in multiple times."
+  (with-gensyms (i lst)
+    `(let ((,lst nil))
+       (dotimes (,i ,length)
+         (setf ,lst (cons ,value ,lst)))
+       ,lst)))

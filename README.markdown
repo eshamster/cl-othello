@@ -1,3 +1,5 @@
+![Build Status](https://circleci.com/gh/eshamster/cl-othello.png?style=shield)
+
 # Cl-Othello
 
 ## Usage

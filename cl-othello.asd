@@ -20,6 +20,7 @@
                :alexandria
                :cl-ppcre)
   :components ((:module "src"
+                :serial t
                 :components
                 ((:file "defines")
                  (:file "utils")
@@ -36,6 +37,7 @@
                  (:file "uct")
                  (:file "human")
                  (:file "player")
+                 (:file "main")
                  (:file "cl-othello"))))
   :description ""
   :long-description

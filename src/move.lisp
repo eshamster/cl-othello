@@ -21,6 +21,7 @@
 
 (defmacro move-x (move)
   `(car ,move))
+
 (defmacro move-y (move)
   `(cdr ,move))
 
@@ -31,24 +32,25 @@
     (t (e) (declare (ignore e)) nil)))
 
 (defun clone-move (move)
-  (cons (move-x move) (move-y move)))
+  (make-a-move (move-x move) (move-y move)))
 
 (defun move-is-in-board (move)
   (let ((x (car move))
 	(y (cdr move)))
-    (if (and (not (null x)) (not (null y))
-	     (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))
-	t
-	nil)))
+    (and (not (null x))
+         (not (null y))
+         (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))))
 
 (defparameter fns-replace-by-next (make-array 8))
+
 (defmacro make-fn-to-replace-by-next-move (x-diff y-diff)
-  `#'(lambda (move)
-       ,(when (not (eq x-diff 0))
-	      `(incf (car move) ,x-diff))
-       ,(when (not (eq y-diff 0))
-	      `(incf (cdr move) ,y-diff))
-       (values move (move-is-in-board move))))
+  `(lambda (move)
+     ,(when (not (eq x-diff 0))
+            `(incf (car move) ,x-diff))
+     ,(when (not (eq y-diff 0))
+            `(incf (cdr move) ,y-diff))
+     (values move (move-is-in-board move))))
+
 (labels ((set-fn (dir x-diff y-diff)
 	   (setf (aref fns-replace-by-next dir)
 		 (make-fn-to-replace-by-next-move x-diff y-diff))))
@@ -61,5 +63,10 @@
   (set-fn +dir-right-up+    1 -1)
   (set-fn +dir-right-down+  1  1))
 
+(declaim (inline get-fn-to-replace-by-next))
+
 (defun get-fn-to-replace-by-next (dir)
+  (declare (optimize (speed 3) (safety 2))
+           (fixnum dir)
+           ((simple-array function (8)) fns-replace-by-next))
   (aref fns-replace-by-next dir))

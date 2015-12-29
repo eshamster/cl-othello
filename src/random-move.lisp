@@ -5,9 +5,6 @@
            :move-by-random-policy
            :prob-store
            :make-prob-store)
-  (:import-from :cl-othello.move
-                :move-x
-                :move-y)
   (:import-from :cl-othello.move-store
                 :get-nth-move
                 :move-store-count
@@ -21,8 +18,8 @@
 (in-package :cl-othello.random-move)
 
 (defstruct prob-store
-  (count 0)
-  (probs (make-array +max-move-store+ :element-type 'number)))
+  (count 0 :type fixnum)
+  (probs (make-array +max-move-store+ :element-type 'single-float)))
 
 (defun reset-prob-store (store)
   (setf (prob-store-count store) 0)
@@ -42,34 +39,39 @@
            ,@body)))))
 
 (defmacro get-nth-prob (n store)
-  `(cond ((null ,n) nil)
-         ((< ,n 0)  nil)
-         ((>= ,n (prob-store-count ,store)) nil)
-         (t (aref (prob-store-probs ,store) ,n))))
+  `(if (and (>= ,n 0)
+            (< ,n (prob-store-count ,store))) 
+       (the single-float (aref (prob-store-probs ,store) ,n))
+       (error "Out of the range of prob-store")))
 
 ; --------------------- ;
 
 (defun make-uniform-policy (game move-store prob-store)
   (declare (ignore game))
   (reset-prob-store prob-store)
-  (let* ((len (move-store-count move-store)))
-    (do-move-store (move move-store)
-      (add-to-prob-store prob-store (/ 1 len))))
+  (let ((len (move-store-count move-store)))
+    (dotimes (i len)
+      (add-to-prob-store prob-store (float (/ 1 len)))))
   prob-store)
 
-(defun decide-move-by-random-policy(game fn-make-policy rand-val prob-store)
-  (if (is-game-end game) (return-from decide-move-by-random-policy))
-  (let* ((move-store (make-moves game)))
-    (labels ((decide (count sum store)
-               (if (>= count (prob-store-count store)) (return-from decide (1- count)))
-               (let ((prob (get-nth-prob count store)))
-                 (cond ((null prob) count)
-                       ((>= sum rand-val) count)
-                       (t (decide (1+ count) (+ sum prob) store))))))
+(defun decide-according-to-prob (store &optional (rand-val (random 1.0)) (sum (get-nth-prob 0 store)) (count 0))
+  (declare (optimize (speed 3) (safety 2))
+           (fixnum count)
+           (single-float rand-val sum))
+  (if (>= count (prob-store-count store))
+      (the fixnum (1- count))
+      (let ((prob (get-nth-prob count store)))
+        (declare (real prob))
+        (cond ((>= sum rand-val) count)
+              (t (decide-according-to-prob store rand-val (+ sum prob) (1+ count)))))))
+
+(defun decide-move-by-random-policy (game fn-make-policy prob-store)
+  (unless (is-game-end game)
+    (let ((move-store (make-moves game)))
       (funcall fn-make-policy game move-store prob-store)
-      (get-nth-move (decide 0 (get-nth-prob 0 prob-store) prob-store) move-store))))
+      (get-nth-move (decide-according-to-prob prob-store) move-store))))
 
 (defun move-by-random-policy (game fn-make-policy &key (prob-store (make-prob-store)))
-  (let ((move (decide-move-by-random-policy game fn-make-policy (random 1.0) prob-store)))
-    (move-game game (move-x move) (move-y move))))
+  (move-game game
+             (decide-move-by-random-policy game fn-make-policy prob-store)))
 

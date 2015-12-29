@@ -83,10 +83,10 @@
                    (t-multf (uct-node-sum (t-nth-uct-val target tree)) -1)
                    (print-tree tree
                                :max-depth 2
-                               :f-proc-value #'(lambda (node)
-                                                 (format nil "num: ~A, sum: ~A"
-                                                         (uct-node-num node)
-                                                         (uct-node-sum node))))
+                               :fn-proc-value #'(lambda (node)
+                                                  (format nil "num: ~A, sum: ~A"
+                                                          (uct-node-num node)
+                                                          (uct-node-sum node))))
                    (is (select-uct-child game tree *default-uct-param*)
                              (get-nth-child target tree)
                              :test #'equalp)))))
@@ -147,10 +147,10 @@
     (ok (> (get-tree-depth uct-node) 1))
     (print-tree uct-node
                 :max-depth 2
-                :f-proc-value #'(lambda (node)
-                                  (format nil "num: ~A, sum: ~A"
-                                          (uct-node-num node)
-                                          (uct-node-sum node))))))
+                :fn-proc-value #'(lambda (node)
+                                   (format nil "num: ~A, sum: ~A"
+                                           (uct-node-num node)
+                                           (uct-node-sum node))))))
   
 (subtest
     "Test uct-simulate"

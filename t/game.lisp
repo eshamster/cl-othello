@@ -23,11 +23,30 @@
     "Test move-game"
   (let ((game (init-game)))
     (ok (not (move-game game -1 3)))
+    (is (get-game-depth game) 0)
     (ok (not (move-game game 5 5)))
+    (is (get-game-depth game) 0)
     (let* ((game (make-nth-test-game 2))
            (depth (get-game-depth game)))
       (assert (move-game game 4 5))
-      (is (get-game-depth game) (1+ depth)))))
+      (is (get-game-depth game) (1+ depth))))
+  (let ((game (init-game)))
+    (ok (move-game game (make-a-move 4 5))))
+  (let ((game (init-game)))
+    (ok (let ((move (make-a-move 4 5)))
+          (move-game game move))))
+  (subtest
+      "Test macroexpand"
+    (is-expand (move-game game 4 5) ($:move-game-by-xy game 4 5))
+    (is-expand (move-game game move) ($:move-game-by-xy game (move-x move) (move-y move)))
+    (is-expand (move-game game (make-a-move 4 5))
+               (let (($$move (make-a-move 4 5)))
+                 ($:move-game-by-xy game (move-x $$move) (move-y $$move)))))
+  (subtest
+      "Test error"
+    (let ((game (init-game)))
+      (prove-macro-expand-error (move-game game) 'simple-error)
+      (prove-macro-expand-error (move-game game 1 2 3) 'simple-error))))
 
 (subtest
     "Test is-game-same-phase"
