@@ -10,6 +10,52 @@
 
 # results
 
+## Inline board:get-piece
+
+2015.12.29
+
+- 56.9 sec -> 54.2 sec
+- 1.80 GB  -> 1.80 GB
+
+"mc-3000" 
+Evaluation took:
+  23.506 seconds of real time
+  23.497428 seconds of total run time (23.434438 user, 0.062990 system)
+  [ Run times consist of 0.032 seconds GC time, and 23.466 seconds non-GC time. ]
+  99.96% CPU
+  72 lambdas converted
+  56,414,392,350 processor cycles
+  893,353,296 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  21.929 seconds of real time
+  21.922668 seconds of total run time (21.843680 user, 0.078988 system)
+  [ Run times consist of 0.100 seconds GC time, and 21.823 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  52,628,433,546 processor cycles
+  886,713,136 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  8.757 seconds of real time
+  8.754668 seconds of total run time (8.749669 user, 0.004999 system)
+  99.98% CPU
+  16 lambdas converted
+  21,017,332,956 processor cycles
+  17,176,048 bytes consed
+  
+Evaluation took:
+  54.193 seconds of real time
+  54.177763 seconds of total run time (54.030786 user, 0.146977 system)
+  [ Run times consist of 0.132 seconds GC time, and 54.046 seconds non-GC time. ]
+  99.97% CPU
+  130,065,405,126 processor cycles
+  1,797,392,800 bytes consed
+
 ## Inline some functions in defines.lisp
 
 2015.12.29

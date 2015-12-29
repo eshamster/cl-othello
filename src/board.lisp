@@ -54,6 +54,8 @@
 	(setf (aref board pnt) piece))
   board)
 
+(declaim (inline get-piece))
+
 ;; Note: If change +board-size+, the expected array size needs to be rewritten
 (defun get-piece (board x y)
   (declare (optimize (speed 3) (safety 2))
