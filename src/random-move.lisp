@@ -51,7 +51,7 @@
   (reset-prob-store prob-store)
   (let ((len (move-store-count move-store)))
     (dotimes (i len)
-      (add-to-prob-store prob-store (float (/ 1 len)))))
+      (add-to-prob-store prob-store (/ 1.0 len))))
   prob-store)
 
 (defun decide-according-to-prob (store &optional (rand-val (random 1.0)) (sum (get-nth-prob 0 store)) (count 0))

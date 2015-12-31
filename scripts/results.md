@@ -10,6 +10,53 @@
 
 # results
 
+## Refactor make-uniform-random-policy by reducing cast
+
+2015.12.31
+
+- 31.8 sec -> 26.7 sec
+- 1.80 GB  -> 0.30 GB (297 MB)
+
+"mc-3000" 
+Evaluation took:
+  10.849 seconds of real time
+  10.845351 seconds of total run time (10.757365 user, 0.087986 system)
+  [ Run times consist of 0.058 seconds GC time, and 10.788 seconds non-GC time. ]
+  99.96% CPU
+  72 lambdas converted
+  26,036,837,277 processor cycles
+  95,684,864 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  11.258 seconds of real time
+  11.255289 seconds of total run time (11.240291 user, 0.014998 system)
+  [ Run times consist of 0.033 seconds GC time, and 11.223 seconds non-GC time. ]
+  99.97% CPU
+  16 lambdas converted
+  27,019,152,936 processor cycles
+  183,809,344 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  4.566 seconds of real time
+  4.565306 seconds of total run time (4.563306 user, 0.002000 system)
+  [ Run times consist of 0.008 seconds GC time, and 4.558 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  10,957,811,523 processor cycles
+  17,134,768 bytes consed
+  
+Evaluation took:
+  26.674 seconds of real time
+  26.667946 seconds of total run time (26.562962 user, 0.104984 system)
+  [ Run times consist of 0.099 seconds GC time, and 26.569 seconds non-GC time. ]
+  99.98% CPU
+  64,018,810,914 processor cycles
+  296,781,616 bytes consed
+
 ## Refactor game:make-moves by using cached move-store
 
 2015.12.29
