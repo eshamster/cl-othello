@@ -10,6 +10,52 @@
 
 # results
 
+## Inline move:move-is-in-board and board:is-in-board
+
+2015.12.31
+
+- 26.7 sec -> 19.4 sec
+-  297 MB  ->  297 MB
+
+"mc-3000" 
+Evaluation took:
+  8.265 seconds of real time
+  8.262744 seconds of total run time (8.189755 user, 0.072989 system)
+  [ Run times consist of 0.005 seconds GC time, and 8.258 seconds non-GC time. ]
+  99.98% CPU
+  72 lambdas converted
+  19,835,580,126 processor cycles
+  95,688,128 bytes consed
+  
+
+"uct-3000" 
+Evaluation took:
+  8.136 seconds of real time
+  8.133764 seconds of total run time (8.126765 user, 0.006999 system)
+  [ Run times consist of 0.028 seconds GC time, and 8.106 seconds non-GC time. ]
+  99.98% CPU
+  16 lambdas converted
+  19,526,965,416 processor cycles
+  183,819,408 bytes consed
+  
+
+"minimax-6" 
+Evaluation took:
+  3.011 seconds of real time
+  3.008541 seconds of total run time (3.007542 user, 0.000999 system)
+  99.93% CPU
+  16 lambdas converted
+  7,226,134,944 processor cycles
+  17,160,336 bytes consed
+  
+Evaluation took:
+  19.414 seconds of real time
+  19.405049 seconds of total run time (19.324062 user, 0.080987 system)
+  [ Run times consist of 0.033 seconds GC time, and 19.373 seconds non-GC time. ]
+  99.95% CPU
+  46,593,174,990 processor cycles
+  296,814,368 bytes consed
+
 ## Refactor make-uniform-random-policy by reducing cast
 
 2015.12.31
