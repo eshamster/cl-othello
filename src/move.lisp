@@ -11,6 +11,8 @@
            :get-fn-to-replace-by-next))
 (in-package :cl-othello.move)
 
+(annot:enable-annot-syntax)
+
 (defun make-a-move (x y)
   `(,x . ,y))
 
@@ -34,8 +36,7 @@
 (defun clone-move (move)
   (make-a-move (move-x move) (move-y move)))
 
-(declaim (inline move-is-in-board))
-
+@inline
 (defun move-is-in-board (move)
   (let ((x (car move))
 	(y (cdr move)))
@@ -64,8 +65,7 @@
   (set-fn +dir-right-up+    1 -1)
   (set-fn +dir-right-down+  1  1))
 
-(declaim (inline get-fn-to-replace-by-next))
-
+@inline
 (defun get-fn-to-replace-by-next (dir)
   (declare (optimize (speed 3) (safety 2))
            (fixnum dir)

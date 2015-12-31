@@ -18,7 +18,8 @@
   :license ""
   :depends-on (:string-case
                :alexandria
-               :cl-ppcre)
+               :cl-ppcre
+               :cl-annot)
   :components ((:module "src"
                 :serial t
                 :components

@@ -23,6 +23,8 @@
            :is-left-dir))
 (in-package cl-othello.defines)
 
+(annot:enable-annot-syntax)
+
 (defconstant +board-size+ 8)
 (defconstant +white+ 1)
 (defconstant +black+ -1)
@@ -38,13 +40,16 @@
 (defconstant +dir-left+		6)
 (defconstant +dir-left-up+ 	7)
 
-(declaim (inline is-empty is-reverse reverse-turn))
-
+@inline
 (defun is-empty (piece)
   (not (or (eq piece +white+) (eq piece +black+))))
+
+@inline
 (defun is-reverse (turn target)
   (and (not (null turn)) (not (null target))
        (eq turn (reverse-turn target))))
+
+@inline
 (defun reverse-turn (turn)
   (* turn -1))
 
