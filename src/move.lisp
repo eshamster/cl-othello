@@ -34,12 +34,13 @@
 (defun clone-move (move)
   (make-a-move (move-x move) (move-y move)))
 
+(declaim (inline move-is-in-board))
+
 (defun move-is-in-board (move)
   (let ((x (car move))
 	(y (cdr move)))
-    (and (not (null x))
-         (not (null y))
-         (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))))
+    (declare (fixnum x y))
+    (and (>= x 0) (< x +board-size+) (>= y 0) (< y +board-size+))))
 
 (defparameter fns-replace-by-next (make-array 8))
 

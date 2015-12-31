@@ -34,6 +34,8 @@
     (set-to-board board 4 3 +white+)
     board))
 
+(declaim (inline is-in-board))
+
 (defun is-in-board (x y)
   (declare (optimize (speed 3) (safety 2))
            (fixnum x y))
